@@ -1,0 +1,115 @@
+name: Deployment Setup
+on:
+  workflow_call:
+    inputs:
+      confirm_deployment:
+        description: 'Type "deploy" to confirm deployment'
+        type: string
+        required: true
+      run_env_update:
+        description: 'Whether to run the ENV=PROD update'
+        type: string
+        required: false
+        default: 'true'  # By default, run the update
+    outputs:
+      version:
+        description: "The version being deployed"
+        value: ${{ jobs.setup.outputs.version }}
+      project_name:
+        description: "Project name from config"
+        value: ${{ jobs.setup.outputs.project_name }}
+      hf_username:
+        description: "Hugging Face username from config"
+        value: ${{ jobs.setup.outputs.hf_username }}
+      docker_username:
+        description: "Docker username from config"
+        value: ${{ jobs.setup.outputs.docker_username }}
+env:
+  GIT_USER_NAME: ${{ secrets.GIT_USER_NAME }}
+  GIT_USER_EMAIL: ${{ secrets.GIT_USER_EMAIL }}
+
+jobs:
+  setup:
+    if: inputs.confirm_deployment == 'deploy'
+    runs-on: ubuntu-latest
+    outputs:
+      project_name: ${{ steps.load_config.outputs.PROJECT_NAME }}
+      hf_username: ${{ steps.load_config.outputs.HF_USERNAME }}
+      docker_username: ${{ steps.load_config.outputs.DOCKER_USERNAME }}
+      version: ${{ steps.get_version.outputs.VERSION }}
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Full history, not shallow
+
+      - name: Set Git identity
+        run: |
+          git config user.email "${{ env.GIT_USER_EMAIL }}"
+          git config user.name "${{ env.GIT_USER_NAME }}"
+
+      - name: Load deploy config
+        id: load_config
+        run: |
+          if [ -f src/config/deploy.env ]; then
+            set -a
+            source src/config/deploy.env
+            set +a
+            
+            echo "PROJECT_NAME=${PROJECT_NAME}" >> $GITHUB_ENV
+            echo "HF_USERNAME=${HF_USERNAME}" >> $GITHUB_ENV
+            echo "DOCKER_USERNAME=${DOCKER_USERNAME}" >> $GITHUB_ENV
+            
+            # Also output as step outputs for immediate use
+            echo "PROJECT_NAME=${PROJECT_NAME}" >> $GITHUB_OUTPUT
+            echo "HF_USERNAME=${HF_USERNAME}" >> $GITHUB_OUTPUT
+            echo "DOCKER_USERNAME=${DOCKER_USERNAME}" >> $GITHUB_OUTPUT
+          else
+            echo "::error::deploy.env file not found"
+            exit 1
+          fi
+      
+      - name: Extract version from version.py
+        id: get_version
+        run: |
+          if [ -f src/version.py ]; then
+            VERSION=$(python -c "exec(open('src/version.py').read()); print(__version__)")
+            echo "Extracted version: $VERSION"
+            echo "VERSION=$VERSION" >> $GITHUB_ENV
+            echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
+          else
+            echo "::error::version.py file not found"
+            exit 1
+          fi
+
+  update_env_prod:
+    needs: setup
+    if: inputs.run_env_update == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set Git identity
+        run: |
+          git config user.email "${{ env.GIT_USER_EMAIL }}"
+          git config user.name "${{ env.GIT_USER_NAME }}"
+
+      - name: Update deploy.env with ENV=PROD
+        run: |
+          if grep -q "^ENV=" src/config/deploy.env; then
+            sed -i 's/^ENV=.*/ENV=PROD/' src/config/deploy.env
+          else
+            echo "ENV=PROD" >> src/config/deploy.env
+          fi
+          echo "Updated deploy.env:"
+          cat src/config/deploy.env
+
+      - name: Commit ENV=PROD change with verified bot
+        uses: iarekylew00t/verified-bot-commit@v1
+        with:
+          message: 'chore: set ENV=PROD for deployment [skip ci]'
+          files: src/config/deploy.env

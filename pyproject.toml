@@ -1,0 +1,38 @@
+[tool.ruff]
+# Target Python version
+target-version = "py39"
+# Direct line length setting
+line-length = 88
+
+# Enable linting rules
+select = [
+    "E",   # pycodestyle errors
+    "F",   # pyflakes
+    "I",   # isort
+    "D",   # pydocstyle (docstrings)
+    "ANN", # flake8-annotations (type hints)
+]
+
+# Rules to ignore project-wide
+ignore = [
+    "D203",   # 1 blank line before class docstring
+    "ANN001",  # Missing type annotation for self in method
+    "F821",    # Undefined names (this fixes import resolution errors)
+]
+
+# Per-file ignores for specific patterns
+[tool.ruff.per-file-ignores]
+"src/agents/*.py" = ["ANN"]  # Ignore all type hints in agent files
+"tests/*.py" = ["ANN"]       # Ignore all type hints in test files
+"__init__.py" = ["D104"]     # Ignore missing docstrings in package __init__.py files
+"src/version.py" = ["D100"]  # Ignore missing module docstring in version.py
+"notebooks/**/*" = ["ALL"]   # Ignore everything in notebooks directory
+"**/*.ipynb" = ["ALL"]       # Ignore all Jupyter notebook files anywhere
+
+# Pydocstyle configuration
+[tool.ruff.pydocstyle]
+convention = "google"  # Use Google docstring style
+
+# Black configuration
+[tool.black]
+line-length = 88

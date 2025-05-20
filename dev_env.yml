@@ -1,0 +1,30 @@
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.11
+  - pip
+  - ipykernel
+  - notebook
+  - ipywidgets
+  - jupyter-dash
+  - numpy
+  - pandas
+  - python-dotenv
+  - requests
+  - chromadb
+  - matplotlib
+  - pip:
+      - -r requirements.txt
+      - ruff
+      - black
+      - pre-commit
+      - commitizen  
+      - uv
+      - pyright
+      - mkdocs-material
+      - mkdocs-macros-plugin
+      - mkdocs-glightbox
+      - datasets==2.21.0
+      - transformers
+      - pip-audit

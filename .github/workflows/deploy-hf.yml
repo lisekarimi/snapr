@@ -1,0 +1,91 @@
+name: Deploy to Hugging Face
+on:
+  workflow_dispatch:
+    inputs:
+      confirm_deployment:
+        description: 'Type "deploy" to confirm deployment'
+        required: true
+        default: ''
+  workflow_call:
+    inputs:
+      confirm_deployment:
+        description: 'Type "deploy" to confirm deployment'
+        type: string
+        required: true
+      run_env_update:
+        description: 'Whether to run the ENV=PROD update'
+        type: string
+        required: false
+        default: 'true'  # By default, run the update when called individually
+
+jobs:
+  setup:
+    uses: ./.github/workflows/deploy-setup.yml
+    with:
+      confirm_deployment: 'deploy'
+      run_env_update: ${{ github.event_name == 'workflow_dispatch' && 'true' || inputs.run_env_update }}
+    secrets: inherit
+
+  deploy_to_huggingface:
+    needs: setup
+    runs-on: ubuntu-latest
+    env:
+      GIT_USER_NAME: ${{ secrets.GIT_USER_NAME }}
+      GIT_USER_EMAIL: ${{ secrets.GIT_USER_EMAIL }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Push Docker context to Hugging Face Space
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+          PROJECT_NAME: ${{ needs.setup.outputs.project_name }}
+          HF_USERNAME: ${{ needs.setup.outputs.hf_username }}
+          VERSION: ${{ needs.setup.outputs.version }}
+        run: |
+          DEPLOY_DIR=hf_deploy
+          echo "Preparing deployment folder at $DEPLOY_DIR..."
+          rm -rf "$DEPLOY_DIR"
+          mkdir -p "$DEPLOY_DIR"
+      
+          REPO_URL=https://${HF_USERNAME}:${HF_TOKEN}@huggingface.co/spaces/${HF_USERNAME}/${PROJECT_NAME}
+
+          # Try to clone existing repository first
+          if git ls-remote "$REPO_URL" &>/dev/null; then
+            echo "Repository exists, cloning..."
+            git clone "$REPO_URL" "$DEPLOY_DIR"
+            cd "$DEPLOY_DIR"
+            find . -mindepth 1 -not -path "./.git*" -exec rm -rf {} +
+          else
+            echo "ℹNo repo found, initializing a new one..."
+            cd "$DEPLOY_DIR"
+            git init -b main
+            git remote add origin "$REPO_URL"
+          fi
+      
+          # Set Git user identity
+          git config user.name "${GIT_USER_NAME}"
+          git config user.email "${GIT_USER_EMAIL}"
+      
+          # Copy deploy files
+          cp ../Dockerfile ./
+          cp ../README.md ./
+          cp ../requirements.lock ./
+          cp -r ../src ./
+          cp ../app.py ./
+
+          # Commit and push changes
+          git add .
+          git commit -m "Deploy version ${VERSION}" || echo "No changes to commit."
+          git push origin main
+      
+          echo "🚀 Hugging Face Space updated with version ${VERSION}"
+          
+  hf_summary:
+    needs: [setup, deploy_to_huggingface]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Summary
+        run: |
+          echo "Successfully deployed to Hugging Face for version ${{ needs.setup.outputs.version }}"
+          echo "- Hugging Face Space: huggingface.co/spaces/${{ needs.setup.outputs.hf_username }}/${{ needs.setup.outputs.project_name }}"

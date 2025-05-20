@@ -1,0 +1,110 @@
+# In .pre-commit-config.yaml
+default_stages: [pre-commit]  # Most hooks run at commit time
+
+repos:
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.1.8
+    hooks:
+      - id: ruff
+        args: ['--fix', '--ignore=ANN101,D203', '--extend-exclude=notebooks/.*|.*\.ipynb']
+        additional_dependencies: []
+
+  - repo: https://github.com/psf/black
+    rev: 23.11.0
+    hooks:
+      - id: black
+        args: [--quiet]
+        exclude: 'notebooks/|\.ipynb$'
+
+  - repo: https://github.com/commitizen-tools/commitizen
+    rev: v3.12.0
+    hooks:
+      - id: commitizen
+        stages: [commit-msg]
+
+  - repo: local
+    hooks:
+      - id: check-commit-message-length
+        name: Check commit message length
+        entry: bash -c 'head -1 "$1" | grep -q "^.\\{1,50\\}$" || (echo "First line of commit message must be 50 chars or less" && exit 1)' --
+        language: system
+        stages: [commit-msg]
+        args: [.git/COMMIT_EDITMSG]
+
+  - repo: local
+    hooks:
+      - id: generate-requirements-lock-new
+        name: Generate new requirements lock file
+        language: python
+        additional_dependencies: [pip-tools]
+        entry: pip-compile --quiet requirements.txt --output-file=requirements.lock.new
+        pass_filenames: false
+        files: ^requirements\.txt$
+        stages: [pre-push]  # Only run at push time
+        
+      - id: check-requirements-lock
+        name: Check if requirements lock file is up to date
+        language: python
+        entry: >
+          python -c "
+          import os, sys, re;
+          if not os.path.exists('requirements.lock.new'): sys.exit(0);
+          
+          def get_packages(filename):
+              if not os.path.exists(filename): return [];
+              with open(filename, 'r') as f:
+                  return sorted([l.strip() for l in f if re.match(r'^[A-Za-z0-9_.-]+==[^;]*', l.strip())]);
+          
+          old_pkgs = get_packages('requirements.lock');
+          new_pkgs = get_packages('requirements.lock.new');
+          
+          try:
+              if old_pkgs == new_pkgs:
+                  os.remove('requirements.lock.new');
+                  sys.exit(0);
+              else:
+                  print('Package versions differ. Run \"make lock\" to update.');
+                  for pkg in set(old_pkgs) - set(new_pkgs):
+                      print(f'- {pkg}');
+                  for pkg in set(new_pkgs) - set(old_pkgs):
+                      print(f'+ {pkg}');
+                  sys.exit(1);
+          finally:
+              if os.path.exists('requirements.lock.new'): os.remove('requirements.lock.new');
+              if os.path.exists('req.old'): os.remove('req.old');
+              if os.path.exists('req.new'): os.remove('req.new');
+          "
+        pass_filenames: false
+        files: ^requirements\.txt$
+        stages: [pre-push]  # Only run at push time
+
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.26.0
+    hooks:
+      - id: gitleaks
+        stages: [pre-push]
+
+  - repo: local
+    hooks:
+      - id: check-remote-branch-differences
+        name: Check for differences between local and remote branch
+        language: system
+        entry: >
+          bash -c '
+          BRANCH=$(git symbolic-ref --short HEAD);
+          if git ls-remote --heads origin $BRANCH | grep -q .; then
+            echo "Remote branch exists, checking for differences...";
+            git fetch --depth=1 origin $BRANCH --quiet;
+            if git diff --quiet HEAD origin/$BRANCH; then
+              echo "Local and remote branches are in sync.";
+              exit 0;
+            else
+              echo "WARNING: Your local branch differs from the remote branch!";
+              echo "Run \"git diff HEAD origin/$BRANCH\" to see differences.";
+              exit 1;
+            fi
+          else
+            echo "Remote branch does not exist yet. Proceeding with commit.";
+            exit 0;
+          fi'
+        pass_filenames: false

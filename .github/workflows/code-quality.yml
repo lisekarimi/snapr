@@ -1,0 +1,96 @@
+name: Code quality CI
+
+on:
+  push:
+    branches: ["feature/*", "feature/**", "dev", "main"]  # Both single and nested feature branches
+  pull_request:
+    branches: [main, dev]
+  workflow_dispatch:
+
+jobs:
+  lint:
+    name: Python Code Quality
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.11"
+
+    - name: Install uv
+      uses: astral-sh/setup-uv@v4
+      with:
+        version: "0.4.19"
+        
+    - name: Cache Python packages
+      uses: actions/cache@v4
+      with:
+        path: ~/.cache/uv
+        key: ${{ runner.os }}-uv-${{ hashFiles('requirements.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-uv-
+
+    - name: Generate new requirements lock file
+      run: |
+        uv pip compile requirements.txt -o requirements.lock.new
+        # Ensure requirements.lock exists even on fresh clones
+        test -f requirements.lock || touch requirements.lock
+        grep -E "^[a-zA-Z0-9_-]+==.*$" requirements.lock > requirements.lock.packages || true
+        grep -E "^[a-zA-Z0-9_-]+==.*$" requirements.lock.new > requirements.lock.new.packages || true
+
+    - name: Check if requirements lock file is up-to-date
+      run: |
+        if ! diff -u requirements.lock.packages requirements.lock.new.packages; then
+          echo "Error: Package versions in requirements.lock are out of date. Run 'make lock' locally and commit changes."
+          exit 1
+        else
+          echo "Package versions match. Lock file is up to date."
+        fi
+
+    - name: Clean up temporary files
+      if: always()
+      run: rm -f requirements.lock.new requirements.lock.packages requirements.lock.new.packages
+
+    - name: Install dependencies
+      run: uv pip install --system -r requirements.lock
+
+    - name: Install development tools
+      run: |
+        uv pip install --system ruff black
+
+    - name: Run code quality check
+      run: |
+        ruff check --exclude=notebooks/,*.ipynb .
+        black --check --exclude="/(notebooks)/|\.ipynb$" .
+
+  test:
+    name: Unit Tests
+    runs-on: ubuntu-latest
+    needs: lint  # This makes tests run after linting passes
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.11"
+
+    - name: Install uv
+      uses: astral-sh/setup-uv@v4
+      with:
+        version: "0.4.19"
+
+    - name: Install dependencies
+      run: |
+        uv pip install --system -r requirements.lock
+        uv pip install --system pytest pytest-mock
+
+    - name: Run unit tests
+      env:
+        OPENAI_API_KEY: "dummy-key-for-testing"
+      run: |
+        PYTHONPATH=$PWD pytest tests

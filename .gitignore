@@ -1,0 +1,23 @@
+# Ignore Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Ignore environment files
+.env
+
+# Ignore cache files
+**/__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Ignore .gitattributes file
+.gitattributes
+
+# Ignore local runtime memory and cache files
+memory/
+
+# Ignore ruff cache
+.ruff_cache/
+
+# Ignore VS Code workspace settings
+.vscode/
+*.code-workspace

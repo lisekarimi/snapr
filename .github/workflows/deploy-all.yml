@@ -1,0 +1,60 @@
+name: Deploy All
+on:
+  workflow_dispatch:
+    inputs:
+      confirm_deployment:
+        description: 'Type "deploy" to confirm full deployment'
+        required: true
+        default: ''
+
+jobs:
+  setup:
+    uses: ./.github/workflows/deploy-setup.yml
+    with:
+      confirm_deployment: ${{ github.event.inputs.confirm_deployment }}
+      run_env_update: 'true'  # Run the ENV=PROD update in the first workflow
+    secrets: inherit
+
+  create_release:
+    needs: setup
+    uses: ./.github/workflows/deploy-release.yml
+    with:
+      confirm_deployment: 'deploy'
+      run_env_update: 'false'  # Skip the ENV=PROD update in subsequent workflows
+    secrets: inherit
+
+  deploy_mkdocs:
+    needs: [setup, create_release]
+    uses: ./.github/workflows/deploy-mkdocs.yml
+    with:
+      confirm_deployment: 'deploy'
+      run_env_update: 'false'  # Skip the ENV=PROD update in subsequent workflows
+    secrets: inherit
+
+  deploy_to_huggingface:
+    needs: [setup, create_release]
+    uses: ./.github/workflows/deploy-hf.yml
+    with:
+      confirm_deployment: 'deploy'
+      run_env_update: 'false'  # Skip the ENV=PROD update in subsequent workflows
+    secrets: inherit
+    
+  deploy_to_docker:
+    needs: [setup, create_release]
+    uses: ./.github/workflows/deploy-docker.yml
+    with:
+      confirm_deployment: 'deploy'
+      run_env_update: 'false'  # Skip the ENV=PROD update in subsequent workflows
+    secrets: inherit
+    
+  deployment_summary:
+    needs: [setup, create_release, deploy_mkdocs, deploy_to_huggingface, deploy_to_docker]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Summary
+        run: |
+          echo "Successfully deployed version ${{ needs.setup.outputs.version }} to all platforms:"
+          echo "- GitHub Release: https://github.com/${{ github.repository }}/releases/tag/${{ needs.setup.outputs.version }}"
+          echo "- Hugging Face Space: huggingface.co/spaces/${{ needs.setup.outputs.hf_username }}/${{ needs.setup.outputs.project_name }}"
+          echo "- Docker Hub: ${{ needs.setup.outputs.docker_username }}/${{ needs.setup.outputs.project_name }}:${{ needs.setup.outputs.version }}"
+          echo "- Documentation: https://$(echo ${{ github.repository_owner }} | tr '[:upper:]' '[:lower:]').github.io/$(echo ${{ github.event.repository.name }} | tr '[:upper:]' '[:lower:]')/"

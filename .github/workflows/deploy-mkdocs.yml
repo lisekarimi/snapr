@@ -1,0 +1,72 @@
+name: Deploy MkDocs
+on:
+  workflow_dispatch:
+    inputs:
+      confirm_deployment:
+        description: 'Type "deploy" to confirm MkDocs deployment'
+        required: true
+        default: ''
+  workflow_call:
+    inputs:
+      confirm_deployment:
+        description: 'Confirmation from parent workflow'
+        type: string
+        required: true
+
+jobs:
+  deploy_mkdocs:
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.confirm_deployment == 'deploy' || inputs.confirm_deployment == 'deploy'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Configure Git
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.x
+          
+      - name: Cache MkDocs dependencies
+        uses: actions/cache@v4
+        with:
+          key: mkdocs-material-${{ github.run_id }}
+          path: .cache
+          restore-keys: |
+            mkdocs-material-
+              
+      - name: Install MkDocs and dependencies
+        run: |
+          pip install mkdocs-material python-dotenv mkdocs-macros-plugin mkdocs-glightbox
+          
+      - name: Deploy MkDocs to GitHub Pages
+        run: mkdocs gh-deploy --force
+        
+  mkdocs_summary:
+    needs: deploy_mkdocs
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Extract version
+        id: get_version
+        run: |
+          if [ -f src/version.py ]; then
+            VERSION=$(python -c "exec(open('src/version.py').read()); print(__version__)")
+            echo "VERSION=$VERSION" >> $GITHUB_ENV
+          else
+            echo "::error::version.py file not found"
+            exit 1
+          fi
+          
+      - name: Summary
+        run: |
+          echo "Successfully deployed documentation for version ${VERSION}"
+          echo "- Documentation: https://$(echo ${{ github.repository_owner }} | tr '[:upper:]' '[:lower:]').github.io/$(echo ${{ github.event.repository.name }} | tr '[:upper:]' '[:lower:]')/"

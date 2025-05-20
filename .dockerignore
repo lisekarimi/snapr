@@ -1,0 +1,47 @@
+# Sensitive files
+.env
+.env.template
+
+# Git and version control
+.git/
+.github/
+.gitignore
+.gitattributes
+.pre-commit-config.yaml
+
+# Python cache and build artifacts
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.pytest_cache/
+*.egg-info/
+pyproject.toml
+
+# IDE settings
+.vscode/
+*.code-workspace
+.ruff_cache/
+
+# Virtual environments
+venv/
+env/
+dev_env.yml
+
+# Local development and runtime files
+memory/
+notebooks/
+*.ipynb_checkpoints/
+
+# Documentation
+docs/
+README.md
+changelog.md
+mkdocs.yml
+mkdocs_macros.py
+
+# Testing
+tests/
+
+# Build automation
+Makefile

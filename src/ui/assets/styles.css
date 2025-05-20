@@ -1,0 +1,226 @@
+/* ==== Global Reset & Layout ==== */
+html, body, #app, body > div, .gradio-container {
+    background-color: #1f2937 !important;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    justify-content: center;
+}
+
+/* ==== Main Container ==== */
+#app-container {
+    background-color: #0e2d53 !important;
+    margin: 0 auto;
+    padding: 20px;
+    border-radius: 50px;
+    box-shadow: 0 4px 30px 5px rgba(0, 0, 0, 0.7);
+    border: 1px solid #1f2f46;
+    max-width: 1000px;
+    width: 100%;
+    color: white;
+}
+
+#app-container h4,
+#app-container p,
+#app-container ol,
+#app-container li,
+#app-container strong {
+    font-size: 16px;
+    line-height: 1.6;
+    color: white !important; 
+}
+
+/* ==== Titles ==== */
+#app-title {
+    font-size: 40px;
+    font-weight: 800;
+    text-align: center;
+    margin-bottom: 6px;
+    background: linear-gradient(135deg, #FFA500, #FF4500);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+#app-title::before {
+    filter: brightness(0.95);
+}
+
+#app-subtitle {
+    font-size: 24px;
+    font-weight: 600;
+    text-align: center;
+    margin-top: 0;
+    background: linear-gradient(135deg, #FFA500, #FF4500);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+/* ==== Intro Text ==== */
+#intro-text {
+    font-size: 16px;
+    color: white !important; 
+    margin-top: 20px;
+    line-height: 1.6;
+}
+
+h4 ~ p {
+    padding-left: 20px;
+}
+ 
+.custom-links a {
+    color: #ffa500;
+    text-decoration: none;
+}
+
+.custom-links a:hover {
+    text-decoration: underline;
+}
+
+/* ==== Category Selector ==== */
+#category-selector span {
+    font-size: 16px;
+    color: #ffa500;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+#category-selector {
+    background-color: #111827;
+    border-radius: 8px;
+    padding: 10px;
+  }
+#category-selector .wrap {
+    background-color: #111827;
+    border: 1px solid #26313f;
+}
+
+.token {
+    background-color: #3f3f46 !important;
+}
+
+.wrap .options li.item {
+    background-color: #1f2937;
+    color: white;
+    padding: 8px;
+}
+
+.wrap .options li.item:hover {
+    background-color: #4b5563;
+}
+
+/* ==== Buttons ==== */
+#run-btn {
+    background: linear-gradient(135deg, #FFA500, #FF4500);
+    color: #0a0f1a !important;
+    font-weight: bold;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: filter 0.3s ease;
+}
+
+#run-btn:hover {
+    filter: brightness(1.1);
+}
+
+.btn-disabled {
+    opacity: 0.5;
+    pointer-events: none;
+    filter: grayscale(1);
+}
+
+/* ==== Status Message / Demo Notice ==== */
+.html-container .prose {
+    font-size: 16px !important;
+    color: #e2e8f0;
+    font-weight: 500;
+}
+
+/* ==== Logs ==== */
+#logs-label {
+    font-weight: bold;
+    color: #ffa500;
+    font-size: 16px;
+}
+
+#scrollContent {
+    height: 400px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column-reverse;
+    border: 1px solid #444;
+    background-color: #111827;
+    font-family: monospace;
+    font-size: 16px;
+    color: #fefefe;
+    padding: 10px;
+    scroll-behavior: smooth;
+}
+
+.log-entry {
+    line-height: 1.5;       
+    margin-bottom: 2px;  
+    white-space: pre-wrap;
+}
+
+
+/* ==== Table ==== */
+#deals-label {
+    font-weight: bold;
+    color: #ffa500;
+    margin-bottom: 6px;
+    font-size: 16px;
+}
+
+#deal-table {
+    overflow-x: auto;
+}
+
+#deal-table table {
+    width: 100% !important;
+    box-sizing: border-box;
+    border-collapse: collapse;
+    table-layout: fixed;
+    min-width: 700px;
+}
+
+#deal-table table th,
+#deal-table table td {
+    padding: 10px;
+    text-align: left;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
+}
+
+#deal-table table th {
+    background-color: #1f2937 !important;
+    color: #f4a261 !important;
+    font-weight: bold;
+    border: 1px solid #334155;
+}
+
+#deal-table table td {
+    background-color: #1f2937 !important;
+    color: white !important;
+    border: 1px solid #334155;
+}
+
+#deal-table table th:first-child,
+#deal-table table td:first-child {
+    width: 40% !important;
+}
+
+/* ==== Version ==== */
+.version-banner {
+    text-align: center;
+    font-size: 0.9em;
+}
+
+
+
