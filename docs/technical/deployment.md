@@ -82,7 +82,7 @@ This commit **automatically triggers**:
 
 🔔 Now all is set for **production deployment and release**.
 
-For full details and a visual overview, see the CI/CD schema in [`/cicd.md`](../cicd.md).
+For full details and a visual overview, see the CI/CD schema in [`/cicd.md`](cicd.md).
 
 There are **two deployment modes**, both triggered **manually** via the GitHub Actions UI.
 

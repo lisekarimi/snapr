@@ -7,7 +7,7 @@ sdk: docker
 pinned: false
 ---
 
-# 🏷️ Snapr - Multi-Agent AI Deal Finder
+# 🏷️ Snapr - Multi-AI Agent Snaps Best Deals
 
 - [🚀 Live Demo on Hugging Face](https://huggingface.co/spaces/lisekarmi/snapr)
 - [📚 Full Documentation](https://lisekarimi.github.io/snapr)
@@ -37,7 +37,7 @@ pinned: false
 
 ## ⚙️ Setup & Installation 
 
-To set up locally and install the app, see the "Local Deployment" section in the [technical documentation](https://lisekarimi.github.io/snapr/technical/deployment/).
+To set up locally and install the app, see the "Local Deployment" section in the [technical documentation](https://lisekarimi.github.io/snapr/technical/localdev/).
 
 ---
 

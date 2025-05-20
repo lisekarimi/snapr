@@ -10,7 +10,7 @@ This section details the models used for price prediction in {{ PRETTY_PROJECT_N
 
 We fine-tuned a `**LLaMA 3.1 8B Quantized**` model using `**QLoRA**`  on a curated subset (~400K items) from a larger dataset.
 
-🔗 See [Data Pipeline](/technical/data/) for dataset source and preprocessing steps.
+🔗 See [Data Pipeline](data.md) for dataset source and preprocessing steps.
 
 After fine-tuning and evaluation, the best-performing checkpoint was published to **Hugging Face Hub**.
 
