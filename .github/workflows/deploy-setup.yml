@@ -12,18 +12,10 @@ on:
         required: false
         default: 'true'  # By default, run the update
     outputs:
-      version:
-        description: "The version being deployed"
-        value: ${{ jobs.setup.outputs.version }}
-      project_name:
-        description: "Project name from config"
-        value: ${{ jobs.setup.outputs.project_name }}
-      hf_username:
-        description: "Hugging Face username from config"
-        value: ${{ jobs.setup.outputs.hf_username }}
-      docker_username:
-        description: "Docker username from config"
-        value: ${{ jobs.setup.outputs.docker_username }}
+      project_name: ${{ steps.load_config.outputs.PROJECT_NAME }}
+      hf_username: ${{ steps.load_config.outputs.HF_USERNAME }}
+      docker_username: ${{ steps.load_config.outputs.DOCKER_USERNAME }}
+      version: ${{ steps.get_version.outputs.VERSION }}
 env:
   GIT_USER_NAME: ${{ secrets.GIT_USER_NAME }}
   GIT_USER_EMAIL: ${{ secrets.GIT_USER_EMAIL }}
@@ -59,8 +51,14 @@ jobs:
         id: load_config
         run: |
           if [ -f src/config/deploy.env ]; then
+            # Read only lines with KEY=VALUE pattern
+            grep -E '^[A-Za-z0-9_]+=.+' src/config/deploy.env > cleaned.env
+            
+            echo "Cleaned environment file:"
+            cat cleaned.env
+            
             set -a
-            source src/config/deploy.env
+            source cleaned.env
             set +a
             
             echo "PROJECT_NAME=${PROJECT_NAME}" >> $GITHUB_ENV
