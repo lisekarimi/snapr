@@ -17,13 +17,10 @@ on:
         value: ${{ jobs.setup.outputs.version }}
       project_name:
         description: "Project name from config"
-        value: ${{ jobs.setup.outputs.project_name }}  # Note lowercase 
-      hf_username:
-        description: "Hugging Face username from config"
-        value: ${{ jobs.setup.outputs.hf_username }}  # Note lowercase
+        value: ${{ jobs.setup.outputs.project_name }}
       docker_username:
         description: "Docker username from config"
-        value: ${{ jobs.setup.outputs.docker_username }}  # Note lowercase
+        value: ${{ jobs.setup.outputs.docker_username }}
 env:
   GIT_USER_NAME: ${{ secrets.GIT_USER_NAME }}
   GIT_USER_EMAIL: ${{ secrets.GIT_USER_EMAIL }}
@@ -34,7 +31,6 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       project_name: ${{ steps.load_config.outputs.PROJECT_NAME }}
-      hf_username: ${{ steps.load_config.outputs.HF_USERNAME }}
       docker_username: ${{ steps.load_config.outputs.DOCKER_USERNAME }}
       version: ${{ steps.get_version.outputs.VERSION }}
     
@@ -59,38 +55,19 @@ jobs:
         id: load_config
         run: |
           if [ -f src/config/deploy.env ]; then
-            # Read only lines with KEY=VALUE pattern
-            grep -E '^[A-Za-z0-9_]+=.+' src/config/deploy.env > cleaned.env
-            
-            echo "Cleaned environment file:"
-            cat cleaned.env
-            
             set -a
-            source cleaned.env
+            source src/config/deploy.env
             set +a
             
             echo "PROJECT_NAME=${PROJECT_NAME}" >> $GITHUB_ENV
-            echo "HF_USERNAME=${HF_USERNAME}" >> $GITHUB_ENV
             echo "DOCKER_USERNAME=${DOCKER_USERNAME}" >> $GITHUB_ENV
             
-            # Also output as step outputs for immediate use
             echo "PROJECT_NAME=${PROJECT_NAME}" >> $GITHUB_OUTPUT
-            echo "HF_USERNAME=${HF_USERNAME}" >> $GITHUB_OUTPUT
             echo "DOCKER_USERNAME=${DOCKER_USERNAME}" >> $GITHUB_OUTPUT
           else
             echo "::error::deploy.env file not found"
             exit 1
           fi
-      
-      - name: Debug environment variables after loading
-        run: |
-          echo "PROJECT_NAME: ${{ env.PROJECT_NAME }}"
-          echo "HF_USERNAME: ${{ env.HF_USERNAME }}"
-          echo "DOCKER_USERNAME: ${{ env.DOCKER_USERNAME }}"
-          echo "Step outputs:"
-          echo "PROJECT_NAME output: ${{ steps.load_config.outputs.PROJECT_NAME }}"
-          echo "HF_USERNAME output: ${{ steps.load_config.outputs.HF_USERNAME }}"
-          echo "DOCKER_USERNAME output: ${{ steps.load_config.outputs.DOCKER_USERNAME }}"    
       
       - name: Extract version from version.py
         id: get_version

@@ -35,19 +35,12 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
-      - name: Debug passed variables
-        run: |
-          echo "Received from setup job:"
-          echo "PROJECT_NAME: ${{ needs.setup.outputs.project_name }}"
-          echo "HF_USERNAME: ${{ needs.setup.outputs.hf_username }}"
-          echo "VERSION: ${{ needs.setup.outputs.version }}"
       
       - name: Push Docker context to Hugging Face Space
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
+          HF_USERNAME: ${{ secrets.HF_USERNAME }}
           PROJECT_NAME: ${{ needs.setup.outputs.project_name }}
-          HF_USERNAME: ${{ needs.setup.outputs.hf_username }}
           VERSION: ${{ needs.setup.outputs.version }}
         run: |
           DEPLOY_DIR=hf_deploy
@@ -95,4 +88,4 @@ jobs:
       - name: Summary
         run: |
           echo "Successfully deployed to Hugging Face for version ${{ needs.setup.outputs.version }}"
-          echo "- Hugging Face Space: huggingface.co/spaces/${{ needs.setup.outputs.hf_username }}/${{ needs.setup.outputs.project_name }}"
+          echo "- Hugging Face Space: huggingface.co/spaces/${{ secrets.HF_USERNAME }}/${{ needs.setup.outputs.project_name }}"
