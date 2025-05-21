@@ -3,15 +3,20 @@ on:
   workflow_dispatch:
     inputs:
       confirm_deployment:
-        description: 'Type "deploy" to confirm MkDocs deployment'
+        description: 'Type "deploy" to confirm deployment'
         required: true
         default: ''
   workflow_call:
     inputs:
       confirm_deployment:
-        description: 'Confirmation from parent workflow'
+        description: 'Type "deploy" to confirm deployment'
         type: string
         required: true
+      run_env_update:
+        description: 'Whether to run the ENV=PROD update'
+        type: string
+        required: false
+        default: 'true'  # By default, run the update when called individually
 
 jobs:
   deploy_mkdocs:
