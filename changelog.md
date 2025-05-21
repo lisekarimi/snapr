@@ -1,19 +1,11 @@
 ## Changelog for v1.0.1
 
-### ✨ Features  
-
 ### 🐛 Fixes  
-- Final fix for deployment to HF.
-- Resolved issue with workflow outputs and environment file parsing.
-- Corrected masking of HF username with asterisks.
-- Added debug steps to address empty HF username.
-
-### ♻️ Refactors  
-
-### ⚡ Performance  
-
-### 📄 Documentation  
-
+- Finalize Hugging Face deployment fix
+- Fix workflow outputs and env file parsing
+- Correct HF username masking
+- Add HF_T_USERNAME to GitHub secrets
+  
 ----
 
 ## Changelog for v1.0.0
