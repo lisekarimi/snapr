@@ -28,19 +28,8 @@ This page provides a complete guide for setting up {{ PRETTY_PROJECT_NAME }} loc
 
 - Ensure your default branch is `main`.
 
-    - For all future repos:
-
       ```bash
       git config --global init.defaultBranch main
-      ```
-
-    - For existing repos (if currently on `master`):
-
-      ```bash
-      git branch -m master main
-      git fetch origin
-      git branch -u origin/main main
-      git remote set-head origin -a
       ```
 
 This is required for pre-commit and CI/CD tools expecting a `main` branch.
@@ -65,11 +54,10 @@ Local setup is useful for development and testing.
     conda activate snapr
     ```
 
-- **Set up development tools:**
+- **Install pre-commit hooks**
     ```bash
     make install-hooks
     ```
-    This installs pre-commit hooks.
 
 - **Set environment variables.**
 
@@ -133,10 +121,6 @@ Here is an exmpale:
 
 !!! tip
     This workflow enforces clean code and reproducible builds before CI/CD even runs.
-
----
-
-Here’s the rephrased full section with your instructions:
 
 ---
 
