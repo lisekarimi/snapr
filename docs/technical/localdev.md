@@ -1,5 +1,3 @@
-{{ snippet("_version.md") }}
-
 # ⚙️ Local Development
 This page provides a complete guide for setting up {{ PRETTY_PROJECT_NAME }} locally, including environment setup, development tools, pre-commit hooks, and key Makefile commands.
 
@@ -58,6 +56,7 @@ Local setup is useful for development and testing.
     git clone https://github.com/lisekarimi/snapr.git
     cd snapr
     ```
+
 - **Install dependencies:**
 
     Create environment with Conda:
@@ -137,9 +136,40 @@ Here is an exmpale:
 
 ---
 
+Here’s the rephrased full section with your instructions:
+
+---
+
 ## 🧼 Dependency Management
 
-- Keeps prod environment lean while dev remains flexible:
-    - **`requirements.txt`** contains only runtime dependencies required to run or deploy the app (e.g., in Docker or on Hugging Face).
-    - **`dev_env.yml`** holds local-only development tools such as `matplotlib` (for EDA), `black`, `ruff`, `pre-commit`, and `mkdocs`
+- Keeps the production environment lean while development remains flexible:
+
+    - **`requirements.lock`** contains only the exact runtime dependencies needed to run or deploy the app (e.g., in Docker or on Hugging Face).
+    - **`dev_env.yml`** holds local-only development tools such as `matplotlib` (for EDA), `black`, `ruff`, `pre-commit`, and `mkdocs`.
+
+!!!warning
+    ⚠️ **Do not edit `requirements.lock` manually.** As the name suggests, it’s *locked*—it should only ever be generated using `make lock`, which syncs it with `requirements.txt`.
+
+📦 When adding dependencies:
+
+- Add to `dev_env.yml` if it's for local development only.
+- Add to `requirements.txt` if it’s needed for runtime or production.
+  Then run `make lock` to update `requirements.lock`.
+
+---
+
+## 💤 Modal App Scaling
+
+Note that the **Modal app is configured to sleep after inactivity**:
+
+- `scaledown_window=180` — containers shut down 3 minutes after the last request. This results in a **cold start** on the next call, but **saves credits**, which suits our demo needs.
+- `min_containers=0` — no container stays "always-on".
+
+    If set to `1`, it keeps one container running (faster, but consumes more credits). Use this only during active development or testing, and **remember to stop the app manually** afterward to avoid waste.
+
+The configuration used offers the best balance for this project.
+
+🔧 To modify this behavior, go to: `src/modal_services/app_config.py`
+
+📚 For more details, refer to [this guide](https://github.com/{{ HF_USERNAME }}/lexo/blob/main/notebooks/10_part2_modal.ipynb).
 

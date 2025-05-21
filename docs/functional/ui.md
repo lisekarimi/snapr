@@ -1,5 +1,3 @@
-{{ snippet("_version.md") }}
-
 # 🎨 User Interface
 
 This section describes the inputs, outputs, and interactive components available in the {{ PRETTY_PROJECT_NAME }} user interface. 

@@ -11,10 +11,8 @@
   font-weight: 700 !important;
 }
 
-.version-info {
-  text-align: right;
-  font-size: 0.9em;
-  color: #888888;
+.md-nav__link:hover {
+  color: #FF7300 !important;
 }
 
 blockquote {

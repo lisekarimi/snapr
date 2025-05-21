@@ -1,5 +1,3 @@
-{{ snippet("_version.md") }}
-
 # 🚀 Future Features
 
 The following features are under consideration for future versions of {{ PRETTY_PROJECT_NAME }}:

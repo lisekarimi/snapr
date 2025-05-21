@@ -1,5 +1,3 @@
-{{ snippet("_version.md") }}
-
 # 🔌 Internal API Integration
 
 {{ PRETTY_PROJECT_NAME }} relies on internal API calls to trigger remote AI agents hosted on **Modal** and **OpenAI**. These are not public endpoints but are securely invoked within the application backend.

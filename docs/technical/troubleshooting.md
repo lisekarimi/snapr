@@ -1,5 +1,3 @@
-{{ snippet("_version.md") }}
-
 # ⚠️ Troubleshooting Guide
 
 This page outlines common issues you may encounter when working with the {{ PRETTY_PROJECT_NAME }} project, and how to resolve them efficiently.

@@ -1,5 +1,3 @@
-{{ snippet("_version.md") }}
-
 # 🗂️ Dataset & Curation
 
 {{ PRETTY_PROJECT_NAME }}’s training data was sourced, filtered, cleaned, embedded, and sampled at scale. This section documents the entire process.

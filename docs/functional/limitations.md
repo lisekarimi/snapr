@@ -1,5 +1,3 @@
-{{ snippet("_version.md") }}
-
 # ⚠️ Limitations
 
 This demo version of {{ PRETTY_PROJECT_NAME }} has several known limitations:

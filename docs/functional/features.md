@@ -1,5 +1,3 @@
-{{ snippet("_version.md") }}
-
 # ✨ Features
 
 This section highlights Snapr’s core features and agents — from category selection to finding the best-value deals through smart discovery and filtering.

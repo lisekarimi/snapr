@@ -1,5 +1,3 @@
-{{ snippet("_version.md") }}
-
 # 🚀 Deployment Guide
 
 This project is deployed remotely to Hugging Face Spaces (Gradio UI, Docker type) and Modal (backend) via CI/CD. Local deployment is optional, for development or testing only.
@@ -14,9 +12,12 @@ Before triggering production deployment, ensure the following are set up:
 
 - ✅ `src/config/deploy.env` is updated with the correct usernames:
     ```env
-    HF_USERNAME=<your-huggingface-username>
     DOCKER_USERNAME=<your-dockerhub-username>
     ```
+
+- ✅ GitHub secrets are configured in your repository. 
+    
+    Refer to the [CI/CD page](cicd.md) for more details on prerequisites and setup.
 
 ### 🧱 Infrastructure
 
@@ -68,7 +69,7 @@ This enables GitHub Pages to serve your MkDocs documentation from the correct br
 
 - Manually run the GitHub Action `changelog-version-prep.yml` to generate the changelog and update `version.py` (input: new version).
 - A changelog is generated using LLM in a `changelog` branch.
-- Review and edit as needed, then **squash or rebase merge via CLI** into `main`.  
+- Review and edit as needed, then **squash and merge** into `main`.  
   ⚠️ The **merge commit must contain** `changelog for`, e.g., `changelog for v1.2.3`.
 
 This commit **automatically triggers**:

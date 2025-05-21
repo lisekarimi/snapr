@@ -1,6 +1,3 @@
-
-{{ snippet("_version.md") }}
-
 # 🧱 System Architecture
 
 The diagram below illustrates the high-level architecture of the {{ PRETTY_PROJECT_NAME }} system, showing how the UI, agents, and external services interact.

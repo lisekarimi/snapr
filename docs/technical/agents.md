@@ -1,5 +1,3 @@
-{{ snippet("_version.md") }}
-
 # 🤖 AI Agents
 
 {{ PRETTY_PROJECT_NAME }}'s backend is built around modular AI agents, each encapsulated in a Python class that performs a distinct function within the deal processing pipeline. All agents inherit from a common `Agent` base class and are orchestrated by the `PlanningAgent`.

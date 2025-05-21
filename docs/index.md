@@ -1,5 +1,3 @@
-{{ snippet("_version.md") }}
-
 # 🏷️ {{ PRETTY_PROJECT_NAME }}
 
 **Multi-agent AI system built to find the best deals — so you never overpay.**  
@@ -53,12 +51,13 @@
 ## 🔧 Development & DevOps
 
 - `.env` files for secure management of API keys and secrets
+- Unit testing implemented with `pytest`
 - PEP8 compliance enforced via Ruff and Black
 - Makefile with all essential project commands
 - Pre-commit hooks for code quality, security, and dependency consistency
 - Environment distinction between production and development
 - Docker support for local development and deployment
-- CI/CD automation with GitHub Actions for testing, code quality, security checks, and production deployment
+- CI/CD automation with GitHub Actions for unit testing, code quality, security checks, and production deployment
 - Documentation built with `MkDocs Material`
 
 ---

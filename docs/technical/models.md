@@ -1,5 +1,3 @@
-{{ snippet("_version.md") }}
-
 # 🧠 Machine Learning Models
 
 This section details the models used for price prediction in {{ PRETTY_PROJECT_NAME }}.

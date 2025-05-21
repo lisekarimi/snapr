@@ -1,5 +1,3 @@
-{{ snippet("_version.md") }}
-
 # 🚶‍♀️ User Flow
 
 Below is the user flow diagram illustrating the main steps in {{ PRETTY_PROJECT_NAME }}:
