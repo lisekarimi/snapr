@@ -21,6 +21,3 @@ memory/
 # Ignore VS Code workspace settings
 .vscode/
 *.code-workspace
-
-# requirements.txt as it's not used
-requirements.txt
