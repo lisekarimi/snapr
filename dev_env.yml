@@ -15,7 +15,7 @@ dependencies:
   - chromadb
   - matplotlib
   - pip:
-      - -r requirements.txt
+      - -r requirements.lock
       - ruff
       - black
       - pre-commit

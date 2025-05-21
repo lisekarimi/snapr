@@ -44,23 +44,8 @@ update-env:
 # =======================
 
 ## Generate/update requirements lock file
-## Creates a complete requirements.txt
 lock:
 	uv pip compile requirements.txt -o requirements.lock
-	python -c "import re; \
-	content = open('requirements.txt', 'r').read(); \
-	orig_mark = '# Original requirements:'; \
-	deps_mark = '# All dependencies'; \
-	has_deps = deps_mark in content; \
-	has_orig = orig_mark in content; \
-	orig = content.split(deps_mark)[0].rstrip() if has_deps else content; \
-	orig = orig if has_orig else orig_mark + '\n' + orig; \
-	deps = [l for l in open('requirements.lock', 'r') if re.match(r'^[a-zA-Z0-9\._-]+==', l)]; \
-	deps = [re.sub(r';.*$$$$', '', d) for d in deps]; \
-	deps = sorted(set(deps)); \
-	new_content = orig + '\n\n' + deps_mark + ' (including transitive):\n' + ''.join(deps); \
-	open('requirements.txt', 'w').write(new_content)"
-	@echo "Requirements file updated with all dependencies."
 
 # =======================
 # 🪝 Hooks

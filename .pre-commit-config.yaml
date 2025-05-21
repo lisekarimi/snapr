@@ -31,53 +31,6 @@ repos:
         stages: [commit-msg]
         args: [.git/COMMIT_EDITMSG]
 
-  - repo: local
-    hooks:
-      - id: generate-requirements-lock-new
-        name: Generate new requirements lock file
-        language: python
-        additional_dependencies: [pip-tools]
-        entry: pip-compile --quiet requirements.txt --output-file=requirements.lock.new
-        pass_filenames: false
-        files: ^requirements\.txt$
-        stages: [pre-push]  # Only run at push time
-        
-      - id: check-requirements-lock
-        name: Check if requirements lock file is up to date
-        language: python
-        entry: >
-          python -c "
-          import os, sys, re;
-          if not os.path.exists('requirements.lock.new'): sys.exit(0);
-          
-          def get_packages(filename):
-              if not os.path.exists(filename): return [];
-              with open(filename, 'r') as f:
-                  return sorted([l.strip() for l in f if re.match(r'^[A-Za-z0-9_.-]+==[^;]*', l.strip())]);
-          
-          old_pkgs = get_packages('requirements.lock');
-          new_pkgs = get_packages('requirements.lock.new');
-          
-          try:
-              if old_pkgs == new_pkgs:
-                  os.remove('requirements.lock.new');
-                  sys.exit(0);
-              else:
-                  print('Package versions differ. Run \"make lock\" to update.');
-                  for pkg in set(old_pkgs) - set(new_pkgs):
-                      print(f'- {pkg}');
-                  for pkg in set(new_pkgs) - set(old_pkgs):
-                      print(f'+ {pkg}');
-                  sys.exit(1);
-          finally:
-              if os.path.exists('requirements.lock.new'): os.remove('requirements.lock.new');
-              if os.path.exists('req.old'): os.remove('req.old');
-              if os.path.exists('req.new'): os.remove('req.new');
-          "
-        pass_filenames: false
-        files: ^requirements\.txt$
-        stages: [pre-push]  # Only run at push time
-
   - repo: https://github.com/gitleaks/gitleaks
     rev: v8.26.0
     hooks:

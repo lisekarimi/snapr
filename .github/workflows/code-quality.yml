@@ -33,27 +33,6 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-uv-
 
-    - name: Generate new requirements lock file
-      run: |
-        uv pip compile requirements.txt -o requirements.lock.new
-        # Ensure requirements.lock exists even on fresh clones
-        test -f requirements.lock || touch requirements.lock
-        grep -E "^[a-zA-Z0-9_-]+==.*$" requirements.lock > requirements.lock.packages || true
-        grep -E "^[a-zA-Z0-9_-]+==.*$" requirements.lock.new > requirements.lock.new.packages || true
-
-    - name: Check if requirements lock file is up-to-date
-      run: |
-        if ! diff -u requirements.lock.packages requirements.lock.new.packages; then
-          echo "Error: Package versions in requirements.lock are out of date. Run 'make lock' locally and commit changes."
-          exit 1
-        else
-          echo "Package versions match. Lock file is up to date."
-        fi
-
-    - name: Clean up temporary files
-      if: always()
-      run: rm -f requirements.lock.new requirements.lock.packages requirements.lock.new.packages
-
     - name: Install dependencies
       run: uv pip install --system -r requirements.lock
 

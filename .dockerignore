@@ -45,3 +45,6 @@ tests/
 
 # Build automation
 Makefile
+
+# requirements.txt as it's not used
+requirements.txt
