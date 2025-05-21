@@ -9,7 +9,7 @@ pinned: false
 
 # 🏷️ Snapr - Multi-AI Agent Snaps Best Deals
 
-- [🚀 Live Demo on Hugging Face](https://huggingface.co/spaces/lisekarmi/snapr)
+- [🚀 Live Demo on Hugging Face](https://huggingface.co/spaces/lisekarimi/snapr)
 - [📚 Full Documentation](https://lisekarimi.github.io/snapr)
 
 📷 **Screenshots**
