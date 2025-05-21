@@ -1,3 +1,13 @@
+## Changelog for v1.0.1
+
+### 🐛 Fixes  
+- Finalize Hugging Face deployment fix
+- Fix workflow outputs and env file parsing
+- Correct HF username masking
+- Add HF_T_USERNAME to GitHub secrets
+  
+----
+
 ## Changelog for v1.0.0
 
 ### ✨ Features  
