@@ -3,8 +3,8 @@
 ### 🐛 Fixes  
 - Finalize Hugging Face deployment fix
 - Fix workflow outputs and env file parsing
-- Correct HF username masking
-- Add HF_T_USERNAME to GitHub secrets
+- Correct HF_USERNAME masking
+- Add HF_USERNAME to GitHub secrets
   
 ----
 
