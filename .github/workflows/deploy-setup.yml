@@ -49,6 +49,12 @@ jobs:
           git config user.email "${{ env.GIT_USER_EMAIL }}"
           git config user.name "${{ env.GIT_USER_NAME }}"
 
+      - name: Debug deploy.env content
+        run: |
+          echo "Content of deploy.env:"
+          cat src/config/deploy.env
+          echo "---------------------"
+      
       - name: Load deploy config
         id: load_config
         run: |
@@ -70,6 +76,16 @@ jobs:
             exit 1
           fi
       
+      - name: Debug environment variables after loading
+        run: |
+          echo "PROJECT_NAME: ${{ env.PROJECT_NAME }}"
+          echo "HF_USERNAME: ${{ env.HF_USERNAME }}"
+          echo "DOCKER_USERNAME: ${{ env.DOCKER_USERNAME }}"
+          echo "Step outputs:"
+          echo "PROJECT_NAME output: ${{ steps.load_config.outputs.PROJECT_NAME }}"
+          echo "HF_USERNAME output: ${{ steps.load_config.outputs.HF_USERNAME }}"
+          echo "DOCKER_USERNAME output: ${{ steps.load_config.outputs.DOCKER_USERNAME }}"    
+      
       - name: Extract version from version.py
         id: get_version
         run: |
@@ -82,7 +98,7 @@ jobs:
             echo "::error::version.py file not found"
             exit 1
           fi
-
+    
   update_env_prod:
     needs: setup
     if: inputs.run_env_update == 'true'
