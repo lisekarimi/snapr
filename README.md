@@ -29,6 +29,7 @@ pinned: false
 - Automatic filtering and memory to avoid duplicates
 - Remote execution on Modal with live activity logs
 - Modern DevOps: Docker, CI/CD with GitHub Actions, pre-commit hooks
+- Unit testing, security checks, and code quality enforcement
 - Auto-generated changelogs and MkDocs-based documentation
 
 👉 For full details, see [Core Features and Development & DevOps.](https://lisekarimi.github.io/snapr).
@@ -41,7 +42,7 @@ To set up locally and install the app, see the "Local Deployment" section in the
 
 ---
 
-## Docs & Architecture
+## 📚 Docs & Architecture
 
 - Documentation includes:
 
@@ -50,6 +51,6 @@ To set up locally and install the app, see the "Local Deployment" section in the
 
 ---
 
-## License
+## 🪪 License
 
 MIT
