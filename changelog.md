@@ -1,3 +1,21 @@
+## Changelog for v1.0.1
+
+### ✨ Features  
+
+### 🐛 Fixes  
+- Final fix for deployment to HF.
+- Resolved issue with workflow outputs and environment file parsing.
+- Corrected masking of HF username with asterisks.
+- Added debug steps to address empty HF username.
+
+### ♻️ Refactors  
+
+### ⚡ Performance  
+
+### 📄 Documentation  
+
+----
+
 ## Changelog for v1.0.0
 
 ### ✨ Features  
