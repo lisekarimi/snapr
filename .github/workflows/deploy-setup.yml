@@ -12,10 +12,18 @@ on:
         required: false
         default: 'true'  # By default, run the update
     outputs:
-      project_name: ${{ steps.load_config.outputs.PROJECT_NAME }}
-      hf_username: ${{ steps.load_config.outputs.HF_USERNAME }}
-      docker_username: ${{ steps.load_config.outputs.DOCKER_USERNAME }}
-      version: ${{ steps.get_version.outputs.VERSION }}
+      version:
+        description: "The version being deployed"
+        value: ${{ jobs.setup.outputs.version }}
+      project_name:
+        description: "Project name from config"
+        value: ${{ jobs.setup.outputs.project_name }}  # Note lowercase 
+      hf_username:
+        description: "Hugging Face username from config"
+        value: ${{ jobs.setup.outputs.hf_username }}  # Note lowercase
+      docker_username:
+        description: "Docker username from config"
+        value: ${{ jobs.setup.outputs.docker_username }}  # Note lowercase
 env:
   GIT_USER_NAME: ${{ secrets.GIT_USER_NAME }}
   GIT_USER_EMAIL: ${{ secrets.GIT_USER_EMAIL }}
