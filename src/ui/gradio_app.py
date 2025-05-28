@@ -24,7 +24,7 @@ from src.utils.state_manager import can_run_app
 
 PROJECT_NAME_CAP = PROJECT_NAME.capitalize()
 REPO_URL = f"https://github.com/lisekarimi/{PROJECT_NAME}"
-DOC_URL = f"https:/lisekarimi.github.io/{PROJECT_NAME}"
+DOC_URL = f"https://lisekarimi.github.io/{PROJECT_NAME}"
 
 
 def build_ui() -> gr.Blocks:
