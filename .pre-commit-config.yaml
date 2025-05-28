@@ -1,0 +1,60 @@
+# In .pre-commit-config.yaml
+default_stages: [pre-commit]  # Most hooks run at commit time
+
+repos:
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.1.8
+    hooks:
+      - id: ruff
+        args: ['--fix', '--ignore=ANN101,D203', '--extend-exclude=notebooks/.*|.*\.ipynb']
+      - id: ruff-format
+        args: ['--exclude=notebooks/,*.ipynb']
+
+  - repo: https://github.com/commitizen-tools/commitizen
+    rev: v3.12.0
+    hooks:
+      - id: commitizen
+        stages: [commit-msg]
+
+  - repo: local
+    hooks:
+      - id: check-commit-message-length
+        name: Check commit message length
+        entry: bash -c 'head -1 "$1" | grep -q "^.\\{1,50\\}$" || (echo "First line of commit message must be 50 chars or less" && exit 1)' --
+        language: system
+        stages: [commit-msg]
+        args: [.git/COMMIT_EDITMSG]
+
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.26.0
+    hooks:
+      - id: gitleaks
+        stages: [pre-push]
+
+  - repo: local
+    hooks:
+      - id: check-remote-branch-differences
+        name: Check for differences between local and remote branch
+        language: system
+        entry: >
+          bash -c '
+          BRANCH=$(git symbolic-ref --short HEAD);
+          if git ls-remote --heads origin $BRANCH | grep -q .; then
+            echo "Remote branch exists, checking if pull is needed...";
+            git fetch origin $BRANCH --quiet;
+            BEHIND=$(git rev-list --count HEAD..origin/$BRANCH);
+            if [ "$BEHIND" -gt 0 ]; then
+              echo "ERROR: Your local branch is $BEHIND commits behind the remote branch!";
+              echo "You need to rebase first: git pull --rebase origin $BRANCH";
+              echo "Cannot proceed with push until you are up to date.";
+              exit 1;
+            else
+              echo "Local branch is up to date with remote.";
+              exit 0;
+            fi
+          else
+            echo "Remote branch does not exist yet. Proceeding with push.";
+            exit 0;
+          fi'
+        stages: [pre-push]
+        pass_filenames: false

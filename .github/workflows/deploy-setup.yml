@@ -1,0 +1,61 @@
+name: Deployment Setup
+
+on:
+  workflow_call:
+    inputs:
+      confirm_deployment:
+        description: 'Type "deploy" to confirm deployment'
+        type: string
+        required: true
+    outputs:
+      version:
+        description: "The version being deployed"
+        value: ${{ jobs.setup.outputs.version }}
+      project_name:
+        description: "Project name from config"
+        value: ${{ jobs.setup.outputs.project_name }}
+
+env:
+  GIT_USERNAME: ${{ secrets.GIT_USERNAME }}
+  GIT_USER_EMAIL: ${{ secrets.GIT_USER_EMAIL }}
+
+jobs:
+  setup:
+    if: inputs.confirm_deployment == 'deploy'
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.VERSION }}
+      project_name: ${{ steps.config.outputs.PROJECT_NAME }}
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Check environment is not DEV
+        run: |
+          if grep -q 'ENV = "DEV"' src/config/constants.py; then
+            echo "❌ Environment is DEV, cannot deploy to production!"
+            echo "Please update ENV to PROD in src/config/constants.py first"
+            exit 1
+          else
+            echo "✅ Environment is PROD, ready for deployment"
+          fi
+
+      - name: Extract project name from pyproject.toml
+        id: config
+        run: |
+          PROJECT_NAME=$(grep '^name = ' pyproject.toml | sed 's/name = "\(.*\)"/\1/')
+          echo "PROJECT_NAME=$PROJECT_NAME" >> $GITHUB_OUTPUT
+          echo "Project name: '$PROJECT_NAME'"
+
+      - name: Extract version from pyproject.toml
+        id: version
+        run: |
+          VERSION=$(grep '^version = ' pyproject.toml | sed 's/version = "\(.*\)"/\1/')
+          echo "Extracted version: $VERSION"
+          echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+
+      - name: Setup complete
+        run: |
+          echo "✅ Deployment setup complete for ${{ steps.config.outputs.PROJECT_NAME }} ${{ steps.version.outputs.VERSION }}"

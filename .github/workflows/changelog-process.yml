@@ -1,0 +1,92 @@
+name: Changelog Processing
+on:
+  workflow_dispatch:
+    inputs:
+      process_changelog:
+        description: 'Type "process" to confirm changelog processing'
+        required: true
+        default: ''
+  push:
+    branches:
+      - main
+
+env:
+  GIT_USERNAME: ${{ secrets.GIT_USERNAME }}
+  GIT_USER_EMAIL: ${{ secrets.GIT_USER_EMAIL }}
+
+jobs:
+  changelog_processing:
+    if: (github.event_name == 'workflow_dispatch' && github.event.inputs.process_changelog == 'process') || (github.event_name == 'push' && contains(github.event.head_commit.message, 'changelog for '))
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Full history, not shallow
+
+      - name: Set Git identity
+        run: |
+          git config user.email "${{ env.GIT_USER_EMAIL }}"
+          git config user.name "${{ env.GIT_USERNAME }}"
+
+  manage_changelog_branches:
+    needs: changelog_processing
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Check for changelog branches
+        id: check-branches
+        run: |
+          CHANGELOG_BRANCHES=$(git ls-remote --heads origin | grep 'refs/heads/changelog' || echo "")
+          if [ -n "$CHANGELOG_BRANCHES" ]; then
+            echo "Found changelog branches, will proceed with deletion"
+            echo "has_changelog_branches=true" >> $GITHUB_OUTPUT
+          else
+            echo "No changelog branches found, skipping deletion"
+            echo "has_changelog_branches=false" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: Delete changelog branches
+        if: steps.check-branches.outputs.has_changelog_branches == 'true'
+        run: |
+          git ls-remote --heads origin | awk '/refs\/heads\/changelog/ {print $2}' | while read branch; do
+            echo "Deleting remote branch: $branch"
+            git push origin --delete "${branch#refs/heads/}" || echo "Failed to delete ${branch}, continuing..."
+          done
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  update_mkdocs_changelog:
+    needs: changelog_processing
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Update MkDocs changelog
+        run: |
+          # Check if docs directory exists
+          if [ ! -d "docs" ]; then
+            echo "::error::docs directory does not exist. MkDocs structure must be properly set up."
+            exit 1
+          fi
+          
+          cp changelog.md docs/
+          echo "Copied root changelog.md to docs/"
+
+      - name: Set Git identity
+        run: |
+          git config user.email "${{ env.GIT_USER_EMAIL }}"
+          git config user.name "${{ env.GIT_USERNAME }}"
+
+      - name: Commit MkDocs changelog update
+        uses: iarekylew00t/verified-bot-commit@v1
+        with:
+          message: 'docs: update changelog in mkdocs'
+          files: docs/changelog.md

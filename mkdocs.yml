@@ -1,0 +1,84 @@
+site_name: Snapr - Documentation Hub
+nav:
+  - 🏠 Home: index.md
+  - 📝 Changelog: changelog.md
+  - 🧑‍💻 Functional Documentation:
+    - 🔍 Overview: functional/overview.md
+    - 🚶‍♀️ User Flow: functional/user-flow.md
+    - ✨ Features: functional/features.md
+    - 🎨 UI: functional/ui.md
+    - ⚠️ Limitations: functional/limitations.md
+    - 🚀 Future Features: functional/future-features.md
+  - 🛠 Technical Documentation:
+    - 🧱 Architecture: technical/architecture.md
+    - 🤖 AI Agents: technical/agents.md
+    - 🧠 ML Models: technical/models.md
+    - 🗂️ Data Pipeline: technical/data.md
+    - 🔌 API Reference: technical/api.md
+    - ⚙️ Local Dev: technical/localdev.md
+    - 🔁 CI/CD Workflow: technical/cicd.md
+    - 🚀 Deployment: technical/deployment.md
+    - 🛠️ Troubleshooting: technical/troubleshooting.md
+theme:
+  name: material
+  features:
+    - navigation.instant
+    - navigation.sections
+    - navigation.tabs
+    - navigation.top
+    - navigation.footer
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+    - content.code.annotate
+  font:
+    text: Roboto
+    code: JetBrains Mono
+  palette:
+    # Light mode
+    - scheme: default
+      primary: orange
+      accent: blue
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+    # Dark mode
+    - scheme: slate
+      primary: orange
+      accent: blue
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+docs_dir: docs
+extra_css:
+  - styles/colors.css
+plugins:
+  - search
+  - glightbox
+  - macros:
+      module_name: mkdocs_macros
+markdown_extensions:
+  - pymdownx.highlight
+  - pymdownx.inlinehilite
+  - pymdownx.details
+  - admonition
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+repo_url: https://github.com/lisekarimi/snapr
+repo_name: lisekarimi/snapr
+copyright: "Made with ❤️ and Material for MkDocs · Powered by all-nighters and enthusiasm 🚀✨"
+extra:
+  generator: false
+  social:
+    - icon: fontawesome/brands/linkedin
+      link: https://linkedin.com/in/lisekarimi
+    - icon: fontawesome/brands/github
+      link: https://github.com/lisekarimi
+    - icon: fontawesome/solid/envelope
+      link: mailto:lisekarimi@gmail.com
+  

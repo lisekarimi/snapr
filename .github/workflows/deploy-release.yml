@@ -1,0 +1,93 @@
+name: Deploy GitHub Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm_deployment:
+        description: 'Type "deploy" to confirm deployment'
+        required: true
+        default: ''
+  workflow_call:
+    inputs:
+      confirm_deployment:
+        description: 'Type "deploy" to confirm deployment'
+        type: string
+        required: true
+    outputs:
+      changelog:
+        description: "Changelog content for current version"
+        value: ${{ jobs.extract_changelog.outputs.changelog }}
+
+jobs:
+  setup:
+    uses: ./.github/workflows/deploy-setup.yml
+    with:
+      confirm_deployment: ${{ inputs.confirm_deployment }}
+    secrets: inherit
+
+  extract_changelog:
+    needs: setup
+    runs-on: ubuntu-latest
+    outputs:
+      changelog: ${{ steps.extract_changelog.outputs.changelog }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Extract changelog for current version
+        id: extract_changelog
+        run: |
+          VERSION="${{ needs.setup.outputs.version }}"
+          echo "Extracting changelog for version: $VERSION"
+      
+          if [ ! -f changelog.md ]; then
+            echo "::error::changelog.md not found"
+            exit 1
+          fi
+      
+          # Escape dots for regex (e.g., 1.2.3 becomes 1\.2\.3)
+          VERSION_REGEX=$(echo "$VERSION" | sed 's/\./\\./g')
+      
+          # Extract content between any heading containing "Changelog" and the version number
+          # to the next heading containing "Changelog"
+          awk "/Changelog.*${VERSION_REGEX}/ {print_flag=1} 
+               /Changelog/ && !/Changelog.*${VERSION_REGEX}/ {print_flag=0} 
+               print_flag" changelog.md > extracted_changelog.md
+      
+          # If no changelog found, create a placeholder
+          if [ ! -s extracted_changelog.md ]; then
+            echo "::warning::No changelog found for version $VERSION"
+            echo "No changelog found for version $VERSION." > extracted_changelog.md
+          fi
+      
+          # Output the changelog content for use in GitHub release
+          {
+            echo "changelog<<EOF"
+            cat extracted_changelog.md
+            echo "EOF"
+          } >> $GITHUB_OUTPUT
+
+  create_release:
+    needs: [setup, extract_changelog]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ needs.setup.outputs.version }}
+          name: ${{ needs.setup.outputs.version }}
+          body: ${{ needs.extract_changelog.outputs.changelog }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          
+  release_summary:
+    needs: [setup, extract_changelog, create_release]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Summary
+        run: |
+          echo "Successfully created GitHub Release for version ${{ needs.setup.outputs.version }}"
+          echo "- GitHub Release: https://github.com/${{ github.repository }}/releases/tag/${{ needs.setup.outputs.version }}"

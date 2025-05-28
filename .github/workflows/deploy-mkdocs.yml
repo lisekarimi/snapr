@@ -1,0 +1,65 @@
+name: Deploy MkDocs
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm_deployment:
+        description: 'Type "deploy" to confirm deployment'
+        required: true
+        default: ''
+  workflow_call:
+    inputs:
+      confirm_deployment:
+        description: 'Type "deploy" to confirm deployment'
+        type: string
+        required: true
+
+jobs:
+  setup:
+    uses: ./.github/workflows/deploy-setup.yml
+    with:
+      confirm_deployment: ${{ inputs.confirm_deployment }}
+    secrets: inherit
+
+  deploy_mkdocs:
+    needs: setup
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Configure Git
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.x
+          
+      - name: Cache MkDocs dependencies
+        uses: actions/cache@v4
+        with:
+          key: mkdocs-material-${{ github.run_id }}
+          path: .cache
+          restore-keys: |
+            mkdocs-material-
+              
+      - name: Install MkDocs and dependencies
+        run: |
+          pip install mkdocs-material python-dotenv mkdocs-macros-plugin mkdocs-glightbox
+          
+      - name: Deploy MkDocs to GitHub Pages
+        run: mkdocs gh-deploy --force
+        
+  mkdocs_summary:
+    needs: [setup, deploy_mkdocs]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Summary
+        run: |
+          echo "Successfully deployed documentation for ${{ needs.setup.outputs.project_name }} ${{ needs.setup.outputs.version }}"
+          echo "- Documentation: https://$(echo ${{ github.repository_owner }} | tr '[:upper:]' '[:lower:]').github.io/$(echo ${{ github.event.repository.name }} | tr '[:upper:]' '[:lower:]')/"

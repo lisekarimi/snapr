@@ -1,0 +1,128 @@
+name: Changelog Prep 
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_version:
+        description: 'Version number (e.g., 1.0.0)'
+        required: true
+
+jobs:
+  generate-changelog:
+    runs-on: ubuntu-latest
+    env:
+      LLM_MODEL: gpt-4o-mini
+      RELEASE_VERSION: ${{ github.event.inputs.release_version }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get commit messages since previous release
+        id: commits
+        run: |
+          CURRENT_TAG="${{ github.event.inputs.release_version }}"
+          echo "Current release tag: $CURRENT_TAG"
+
+          # Find the latest tag (previous release)
+          PREVIOUS_TAG=$(git tag --sort=-creatordate | head -n1)
+
+          if [ -z "$PREVIOUS_TAG" ]; then
+            echo "No previous tags found, using initial commit"
+            PREVIOUS_TAG=$(git rev-list --max-parents=0 HEAD)
+          else
+            echo "Previous release tag: $PREVIOUS_TAG"
+          fi
+
+          # Get commits between previous tag and HEAD
+          COMMITS=$(git log "$PREVIOUS_TAG"..HEAD --pretty=format:"- %s")
+
+          echo "commits<<EOF" >> $GITHUB_OUTPUT
+          echo "$COMMITS" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+          
+      - name: Generate changelog with LLM
+        id: gpt
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          COMMITS: ${{ steps.commits.outputs.commits }}
+          TAG_NAME: ${{ github.event.inputs.release_version }}
+        run: |
+          echo "$COMMITS" > /tmp/commits.txt
+          echo "Commits passed to LLM:"
+          cat /tmp/commits.txt
+
+          # Prepare the API request with proper JSON escaping
+          PROMPT="You are a changelog generator. Given a list of commit messages, group them under the following markdown sections:
+
+            ### ✨ Features  
+            ### 🐛 Fixes  
+            ### ♻️ Refactors  
+            ### ⚡ Performance  
+            ### 📄 Documentation  
+
+            Only include meaningful, user-facing changes. For fixes, exclude low-level internal changes like test adjustments, error wrapper tweaks, or import path corrections unless they affect actual functionality. For refactors, include only structural or project-wide changes — ignore variable renames, log message updates, or internal file splits. Omit test, style, chore, and CI commits unless they directly impact users. Write concise bullet points under each section using markdown (-), without commit prefixes like feat:, fix:, etc. Group similar items. Output only the markdown-formatted changelog."
+
+          # Save prompt to file to avoid command line escaping issues
+          echo "$PROMPT" > /tmp/prompt.txt
+          
+          # Use jq with raw input to properly handle multiline content with special characters
+          PAYLOAD=$(jq -n \
+            --arg model "$LLM_MODEL" \
+            --rawfile prompt /tmp/prompt.txt \
+            --rawfile commits /tmp/commits.txt \
+            '{
+              "model": $model,
+              "messages": [
+                {"role": "system", "content": "You are a changelog assistant."},
+                {"role": "user", "content": ($prompt + "\n\n" + $commits)}
+              ],
+              "temperature": 0.7,
+              "max_tokens": 1000
+            }')
+
+          # Send the properly escaped payload
+          RESPONSE=$(curl -s -w "\n%{http_code}" https://api.openai.com/v1/chat/completions \
+            -H "Authorization: Bearer $OPENAI_API_KEY" \
+            -H "Content-Type: application/json" \
+            -d "$PAYLOAD")
+
+          HTTP_STATUS=$(echo "$RESPONSE" | tail -n1)
+          RESPONSE_BODY=$(echo "$RESPONSE" | sed '$ d')
+
+          if [ "$HTTP_STATUS" -ne 200 ]; then
+            echo "Error calling OpenAI API. Status code: $HTTP_STATUS"
+            echo "$RESPONSE_BODY"
+            exit 1
+          fi
+
+          if ! CHANGELOG_CONTENT=$(echo "$RESPONSE_BODY" | jq -r '.choices[0].message.content'); then
+            echo "Failed to parse API response:"
+            echo "$RESPONSE_BODY"
+            exit 1
+          fi
+
+          # Remove any markdown code blocks that might be in the response
+          CHANGELOG_CONTENT=$(echo "$CHANGELOG_CONTENT" | sed '/^```.*$/d')
+
+          # Prepend new changelog to keep history with spacing and separator AFTER content
+          {
+            printf "## Changelog for %s\n\n" "$TAG_NAME"
+            printf -- "%s\n\n" "$CHANGELOG_CONTENT"
+            printf "%s\n\n" "----"
+            [ -f changelog.md ] && cat changelog.md
+          } > new_changelog.md
+
+          mv new_changelog.md changelog.md
+
+          echo "Generated changelog:"
+          cat changelog.md
+
+      - name: Create Pull Request for changelog
+        uses: peter-evans/create-pull-request@v5
+        with:
+          commit-message: "docs: add changelog for ${{ github.event.inputs.release_version }}"
+          title: "Changelog for ${{ github.event.inputs.release_version }}"
+          body: "Automatically generated changelog using LLM"
+          branch: changelog-${{ github.event.inputs.release_version }}
