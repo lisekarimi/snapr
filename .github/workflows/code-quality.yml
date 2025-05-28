@@ -3,8 +3,18 @@ name: Code quality CI
 on:
   push:
     branches: ["feature/**", "dev", "main"]
+    paths:
+      - "**.py"
+      - "pyproject.toml"
+      - "uv.lock"
+      - ".github/workflows/**"
   pull_request:
     branches: [main, dev]
+    paths:
+      - "**.py"
+      - "pyproject.toml"
+      - "uv.lock"
+      - ".github/workflows/**"
   workflow_dispatch:
 
 jobs:
@@ -22,8 +32,8 @@ jobs:
 
     - name: Run Ruff checks
       run: |
-        uvx ruff check --exclude=notebooks/,*.ipynb .
-        uvx ruff format --check --exclude=notebooks/,*.ipynb .
+        uvx ruff check .
+        uvx ruff format --check .
 
   test:
     name: Unit Tests

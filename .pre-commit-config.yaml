@@ -6,9 +6,10 @@ repos:
     rev: v0.1.8
     hooks:
       - id: ruff
-        args: ['--fix', '--ignore=ANN101,D203', '--extend-exclude=notebooks/.*|.*\.ipynb']
+        files: \.py$
+        args: ['--fix', '--ignore=ANN101,D203']
       - id: ruff-format
-        args: ['--exclude=notebooks/,*.ipynb']
+        files: \.py$
 
   - repo: https://github.com/commitizen-tools/commitizen
     rev: v3.12.0
