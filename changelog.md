@@ -13,8 +13,8 @@
 - Add Gradio UI
 
 ### 📄 Documentation  
-- Add function-level documentation and code comments  
-- Create technical documentation  
+- Add function-level documentation   
+- Add technical documentation
 - Write README
 
 ----
