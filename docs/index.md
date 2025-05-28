@@ -52,7 +52,7 @@
 
 - `.env` files for secure management of API keys and secrets
 - Unit testing implemented with `pytest`
-- PEP8 compliance enforced via Ruff and Black
+- PEP8 compliance enforced via Ruff
 - Makefile with all essential project commands
 - Pre-commit hooks for code quality, security, and dependency consistency
 - Environment distinction between production and development
@@ -73,9 +73,10 @@
 
 - **Languages & Frameworks:** Python, Gradio
 - **Machine Learning & AI:** OpenAI (GPT), Fine Tuned LLaMA, RAG with E5 embeddings and ChromaDB, XGBoost
+- **Development Tools:** uv (Python package manager)
 - **Deployment & Infrastructure:** Docker, Modal, AWS S3, DockerHub
 - **Documentation & Testing:** MkDocs with mkdocs-material, Pytest, Pre-commit hooks
-- **DevOps & CI/CD:** GitHub Actions, requirements.lock
+- **DevOps & CI/CD:** GitHub Actions
 
 ---
 

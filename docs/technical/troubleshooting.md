@@ -4,7 +4,7 @@ This page outlines common issues you may encounter when working with the {{ PROJ
 
 ---
 
-## 1. ⚡ Modal App Not Running
+## ⚡ Modal App Not Running
 
 **Symptoms:**
 
@@ -29,9 +29,9 @@ This page outlines common issues you may encounter when working with the {{ PROJ
 
 - If you manually deleted the app in Modal:
 
-    - Set the correct environment in `deploy.env`:
+    - Set the correct environment in `src/config/constants.py`:
         ```py
-        env=dev  # or env=prod
+        env=PROD  # or env=DEV
         ```
     - Then run make `make docker-run` to redeploy.
 
@@ -39,42 +39,22 @@ This page outlines common issues you may encounter when working with the {{ PROJ
 
 ---
 
-## 2. 🔗 Dependency Conflicts
+## 🎨 Code Formatting
 
 **Symptoms:**
 
-- Errors during CI/CD runs (e.g., GitHub Actions) or local pre-push hooks
-- Conflicting versions between `requirements.txt` and `requirements.lock`
-
-**Fix:**
-
-* After any change to `requirements.txt`, always run:
-
-  ```sh
-  make lock
-  ```
-
-  This updates both `requirements.lock` and syncs versions back to `requirements.txt`.
-
----
-
-## 3. 🎨 Code Formatting
-
-**Symptoms:**
-
-- Pre-commit hook errors related to PEP8/code formatting (Ruff/Black)
+- Pre-commit hook errors related to PEP8/code formatting (Ruff)
 
 **Fix:**
 
 - For any PEP8 or code formatting failures flagged by pre-commit:
 
-    - First, run `make fix` to auto-fix most issues; 
-    - If errors remain, run `make check` to identify what needs manual fixing, 
-    - Then re-run `make pre-commit` or try your commit again.
+    - **Quick fix:** Run `make fix` to auto-fix most issues, then `make lint` to verify
+    - **Manual fix:** Address each issue shown in the pre-commit log output
 
 ---
 
-## 4. 🔑 API Key Issues
+## 🔑 API Key Issues
 
 **Symptoms:**
 
@@ -93,7 +73,7 @@ This page outlines common issues you may encounter when working with the {{ PROJ
 
 ---
 
-## 5. 🌎 Env Misconfig
+## 🌎 Env Misconfig
 
 **Symptoms:**
 
@@ -102,9 +82,9 @@ This page outlines common issues you may encounter when working with the {{ PROJ
 
 **Fix:**
 
-- Set the correct environment in `deploy.env`:
+- Set the correct environment in `src/config/constants.py`:
     ```py
-    env=dev  # or env=prod
+    env=DEV  # or env=PROD
     ```
 - Then run make `make docker-run` to redeploy.
 

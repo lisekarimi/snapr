@@ -1,6 +1,6 @@
 # 🔁 CI/CD Workflow
 
-- All deployments, code quality checks (`ruff`, `black`), unit tests, **security checks**, and `requirements.lock` validation are automated via GitHub Actions on every PR and push.
+- All deployments, code quality checks (`ruff`), unit tests, **security checks** are automated via GitHub Actions on every PR and push.
 
 - See [/.github/workflows](https://github.com/{{ HF_USERNAME }}/{{ PROJECT_NAME }}/tree/main/.github/workflows) for full pipeline details.
 
@@ -31,7 +31,7 @@ Add the following:
       - then copy the `@users.noreply.github.com` address shown there.
 
 !!!note
-      - Define `HF_USERNAME` in GitHub Actions secrets even if it's already in deploy.env, because GitHub treats it as sensitive data and mask it, leading to hard-to-debug issues. Using secrets ensures consistent and reliable acces.
+      - Define `HF_USERNAME` in GitHub Actions secrets even if it's already in `.env`, because GitHub treats it as sensitive data and mask it, leading to hard-to-debug issues. Using secrets ensures consistent and reliable acces.
       - To anticipate similar issues, do the same for `DOCKER_USERNAME` — define it in GitHub Actions secrets as well.
 
 ---
@@ -53,6 +53,7 @@ Go to Github Repo:
 Instead of pushing commits to GitHub to test your CI/CD pipeline, use **act** to run workflows locally.
 
 We've created `act.mk` with all testing commands - this allows you to:
+
 - 🧪 **Test workflows locally** before pushing to GitHub
 - 🚀 **Debug CI/CD issues** without polluting git history  
 - ⚡ **Faster iteration** - no waiting for GitHub runners

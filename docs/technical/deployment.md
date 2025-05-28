@@ -91,24 +91,40 @@ This commit **automatically triggers**:
 
 For full details and a visual overview, see the CI/CD schema in [`/cicd.md`](cicd.md).
 
-Deploy each component individually for better control and easier debugging:
-
-1. **GitHub Release** - Creates version tag and release with changelog
-2. **Docker Hub** - Builds and pushes Docker image with version and `latest` tags  
-3. **Hugging Face** - Deploys minimal code/files for Docker-based deployment
-4. **MkDocs** - Updates documentation on GitHub Pages
-
 Each deployment is triggered manually by typing **`deploy`** as input.
 
 - It first checks if `ENV="PROD"` is set in `src/config/constants.py`
     - If the check fails, it raises an error and stops the deployment
     - If the check passes, it proceeds with the deployment process
 
+!!!note
+    **Exception:** MkDocs deployment skips the environment check as it's not necessary for documentation
+
 **Benefits:**
+
 - 🎯 **Targeted deployment** - deploy only what you need
 - 🐛 **Easier debugging** - focused logs per service
 - 🔄 **Independent rollbacks** - fix issues in specific services
 - ⚡ **Faster iteration** - test individual components
+
+**Deployment Steps:**
+
+1. **Deploy to Hugging Face** – This action deploys minimal code and configuration for Docker-based deployment
+   
+    → *Manual step*: Perform sanity check - verify logs and UI functionality; fix issues and redeploy as needed.
+
+2. **Deploy to Docker Hub** – This action builds and publishes Docker images with `version` and `latest` tags
+
+3. **Update Documentation (MkDocs)** – This action publishes updated documentation to GitHub Pages
+   
+    → *Manual step*: Sanity check page layout and navigation links.
+
+4. **Create GitHub Release** – This action creates a version tag and publishes the release.
+
+
+
+
+
 
 
 

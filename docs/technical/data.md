@@ -65,9 +65,7 @@ Used primarily to train and evaluate the fine-tuned LLaMA model.
 
 ## ☁️ Storage & Hosting
 
-The final dataset is pushed to the Hugging Face Hub:
-
-[https://huggingface.co/datasets/{{ HF_USERNAME }}/pricer-data](https://huggingface.co/datasets/{{ HF_USERNAME }}/pricer-data)
+The final dataset is pushed to the [Hugging Face Hub.](https://huggingface.co/datasets/{{ HF_USERNAME }}/pricer-data)
 
 ---
 
