@@ -1,7 +1,6 @@
 """MkDocs Macros Plugin Configuration."""
 
 import importlib.util
-import os
 import sys
 from pathlib import Path
 from types import ModuleType
@@ -53,8 +52,8 @@ def get_project_metadata() -> Dict[str, Any]:
 def load_environment_variables() -> Dict[str, Any]:
     """Load and validate environment variables."""
     return {
-        "HF_USERNAME": os.getenv("HF_USERNAME", "default_hf_user"),
-        "DOCKER_USERNAME": os.getenv("DOCKER_USERNAME", "default_docker_user"),
+        "HF_USERNAME": "lisekarimi",
+        "DOCKER_USERNAME": "lkar",
     }
 
 
