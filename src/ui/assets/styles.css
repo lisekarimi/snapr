@@ -19,6 +19,11 @@ html, body, #app, body > div, .gradio-container {
     max-width: 1000px;
     width: 100%;
     color: white;
+    margin-bottom: 10px !important;
+}
+
+#app-container > *:last-child {
+    margin-bottom: 0 !important;
 }
 
 #app-container h4,
@@ -29,6 +34,17 @@ html, body, #app, body > div, .gradio-container {
     font-size: 16px;
     line-height: 1.6;
     color: white !important; 
+}
+
+.gradio-container {
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+}
+
+.version-banner {
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+    margin-top: 10px;
 }
 
 /* ==== Titles ==== */
