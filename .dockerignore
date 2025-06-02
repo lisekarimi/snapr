@@ -44,3 +44,6 @@ tests/
 
 # Build automation
 Makefile
+
+# CI/CD local tools
+act.mk

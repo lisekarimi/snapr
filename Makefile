@@ -67,9 +67,11 @@ ui:	## Run the UI dev server with hot reloading
 # 🐳 Docker Commands
 # =======================
 
-docker-build: ## Build the Docker image for development → ENV=DEV (uses default)
+docker-build: ## Build the Docker image for development
 	docker build -t $(DOCKER_IMAGE):$(TAG) .
 
+docker-ls: ## List files in Docker image
+	docker run --rm $(DOCKER_IMAGE):$(TAG) ls -la /app
 
 # Workflow: Edit code → Ctrl+C → Run 'make docker-run' again to see changes
 docker-run:	## Run development container with live code changes (no rebuild needed)
