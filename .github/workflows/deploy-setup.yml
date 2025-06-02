@@ -22,7 +22,7 @@ env:
 jobs:
   setup:
     if: inputs.confirm_deployment == 'deploy'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     outputs:
       version: ${{ steps.version.outputs.VERSION }}
       project_name: ${{ steps.config.outputs.PROJECT_NAME }}
