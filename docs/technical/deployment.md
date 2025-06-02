@@ -17,12 +17,13 @@ Before triggering production deployment, ensure the following are set up:
 
 ### 📝 Configuration
 
-- ✅ GitHub secrets are configured in your repository. 
-    
+- ✅ GitHub secrets are configured in your repository.
+
     Refer to the [CI/CD page](cicd.md) for more details on prerequisites and setup.
 
 - The **version** is set in `pyproject.toml` and committed to GitHub.
 - `ENV=PROD` is set in the `src/config/constants` file and committed.
+- `CHANGELOG.md` is up to date and copied to the docs folder
 
 
 ### 🧱 Infrastructure
@@ -31,7 +32,7 @@ Before triggering production deployment, ensure the following are set up:
     - `OPENAI_API_KEY` and `HF_TOKEN` (write access) are added as secrets
     - Your account has enough credits to run and deploy the app
 
-- ✅ **Docker Hub repository** is created  
+- ✅ **Docker Hub repository** is created
     - The repo name must **match** the `PROJECT_NAME` defined in `pyproject.toml`
 
 - ✅ **Hugging Face Space** is created:
@@ -46,7 +47,7 @@ Before triggering production deployment, ensure the following are set up:
     emoji:
     colorFrom:
     colorTo:
-    sdk: 
+    sdk:
     pinned:
     ---
     ```
@@ -68,20 +69,6 @@ Github Pages is required for MkDocs docs deployment.
     - After the first successful deploy, switch to: `gh-pages / (root)` and **Save**
 
 This enables GitHub Pages to serve your MkDocs documentation from the correct branch.
-
----
-
-## 🧾 Pre-Deployment
-
-- Manually run the GitHub Action `changelog-prep.yml` to generate the changelog (input: new version).
-- A changelog is generated using LLM in a `changelog` branch.
-- Review and edit as needed, then **squash and merge** into `main`.  
-  ⚠️ The **merge commit must contain** `changelog for`, e.g., `changelog for 1.2.3`.
-
-This commit **automatically triggers**:
-
-- 🧹 Deletion of the `changelog` branch  
-- 📄 Copying the changelog to `docs/changelog.md`
 
 ---
 
@@ -110,24 +97,13 @@ Each deployment is triggered manually by typing **`deploy`** as input.
 **Deployment Steps:**
 
 1. **Deploy to Hugging Face** – This action deploys minimal code and configuration for Docker-based deployment
-   
+
     → *Manual step*: Perform sanity check - verify logs and UI functionality; fix issues and redeploy as needed.
 
 2. **Deploy to Docker Hub** – This action builds and publishes Docker images with `version` and `latest` tags
 
 3. **Update Documentation (MkDocs)** – This action publishes updated documentation to GitHub Pages
-   
+
     → *Manual step*: Sanity check page layout and navigation links.
 
 4. **Create GitHub Release** – This action creates a version tag and publishes the release.
-
-
-
-
-
-
-
-
-
-
-

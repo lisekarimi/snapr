@@ -4,7 +4,7 @@ emoji: 🏷️
 colorFrom: yellow
 colorTo: blue
 sdk: docker
-pinned: false
+short_description: Multi-AI agent system trained to snap the best deals
 ---
 
 # 🏷️ Snapr - Multi-AI Agent Snaps Best Deals
@@ -23,7 +23,7 @@ pinned: false
 ## 📖 Overview 
 **Snapr** is an AI-powered system that finds the best online deals using a pipeline of collaborative agents powered by LLMs, traditional ML models, embeddings, and retrieval-augmented generation (RAG).
 
-### ⚙️ Key Capabilities
+### 🔑 Key Capabilities
 - Central agent orchestrates deal processing with specialized agents
 - Real-time deal fetching and price prediction using LLMs and traditional models
 - Automatic filtering and memory to avoid duplicates
