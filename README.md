@@ -4,7 +4,7 @@ emoji: 🏷️
 colorFrom: yellow
 colorTo: blue
 sdk: docker
-pinned: false
+short_description: Multi-AI agent system trained to snap the best deals
 ---
 
 # 🏷️ Snapr - Multi-AI Agent Snaps Best Deals
@@ -14,16 +14,14 @@ pinned: false
 
 📷 **Screenshots**
 
-<a href="docs/styles/assets/ui/full_app.png">
-  <img src="docs/styles/assets/ui/full_app.png" width="400">
-</a>
+<img src="https://github.com/lisekarimi/snapr/blob/main/docs/styles/assets/ui/full_app.png?raw=true" alt="Snapr interface" width="400">
 
 ---
 
-## 📖 Overview 
+## 📖 Overview
 **Snapr** is an AI-powered system that finds the best online deals using a pipeline of collaborative agents powered by LLMs, traditional ML models, embeddings, and retrieval-augmented generation (RAG).
 
-### ⚙️ Key Capabilities
+### 🔑 Key Capabilities
 - Central agent orchestrates deal processing with specialized agents
 - Real-time deal fetching and price prediction using LLMs and traditional models
 - Automatic filtering and memory to avoid duplicates
@@ -36,7 +34,7 @@ pinned: false
 
 ---
 
-## ⚙️ Setup & Installation 
+## ⚙️ Setup & Installation
 
 To set up locally and install the app, see the "Local Deployment" section in the [technical documentation](https://lisekarimi.github.io/snapr/technical/localdev/).
 

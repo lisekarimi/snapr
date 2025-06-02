@@ -1,110 +1,115 @@
-# ⚙️ Local Development
-This page provides a complete guide for setting up {{ PROJECT_NAME_DISPLAY }} locally, including environment setup, development tools, pre-commit hooks, and key Makefile commands.
+# 🚀 Local Development Guide
+
+This guide walks you through setting up {{ PROJECT_NAME_DISPLAY }} for local development, from initial prerequisites to running the application locally.
 
 ---
 
 ## 📋 Prerequisites
 
 ### 🔧 System Requirements
-- Python 3.11
-- Docker
-- VS Code or any IDE that supports Python
-- [uv package manager](https://docs.astral.sh/uv/getting-started/installation/)
-- Make: `winget install GnuWin32.Make` (Windows) | `brew install make` (macOS) | `sudo apt install make` (Linux)
-- Google Colab (for GPU-based notebooks), or use your own GPU if available.
+- **Python 3.11**
+- **Docker** - for containerized deployments
+- **[uv package manager](https://docs.astral.sh/uv/getting-started/installation/)** - for dependency management
+- **Make** - for build automation
+  - Windows: `winget install GnuWin32.Make`
+  - macOS: `brew install make`
+  - Linux: `sudo apt install make`
 
-### ☁️ Accounts & Services
-- [Hugging Face](https://huggingface.co/) (for deployment)
-- [Docker Hub](https://hub.docker.com/)
-- [Modal](https://modal.com/) (required for app runtime)
+### ☁️ Required Accounts
+You'll need accounts for these services:
+- **[Modal](https://modal.com/)** - serverless app runtime (includes $5 free credits)
+- **[Hugging Face](https://huggingface.co/)** - model deployment
+- **[Docker Hub](https://hub.docker.com/)** - container registry
 
-### 🧠 Useful Skills
-- Modal & Serverless deployment
-- LLM APIs (OpenAI, Hugging Face Transformers)
-- Traditional ML workflows (scikit-learn, XGBoost, etc.)
-- Git, GitHub, pre-commit workflows
-- CI/CD with GitHub Actions
-
-### 🪝 Git Setup
-
-- Ensure your default branch is `main`.
-
-      ```bash
-      git config --global init.defaultBranch main
-      ```
-
-This is required for pre-commit and CI/CD tools expecting a `main` branch.
+### 💡 Recommended Tools
+- **VS Code** or any Python-friendly IDE
+- **Google Colab** for GPU-based notebooks (or your own GPU)
 
 ---
 
-## 🛠️ Local Setup
+## 🛠️ Quick Start
 
-Local setup is useful for development and testing.
+### 1. Clone and Configure
 
-- **Clone the repository:**
 ```bash
 git clone https://github.com/lisekarimi/snapr.git
 cd snapr
 ```
-- **Configure `.env`**:
+
+Ensure your default branch is `main`. This is required for pre-commit and CI/CD tools expecting a `main` branch.
 
 Rename `.env.example` to `.env` and populate it with the required secrets.
 
-- **Modal Setup Required:**
+### 2. Modal Setup
 
-    - Sign up at [modal.com](https://modal.com/) (includes $5 free credits).
-    - Add `OPENAI_API_KEY` and `HF_TOKEN` (with **write permissions**) as secrets in your Modal account.
-    - Go to Settings → Profile → Tokens, then click "New Token" to generate one.
+Modal is required for running the app. Here's how to get started:
+
+1. Sign up at [modal.com](https://modal.com/) (includes $5 free credits)
+2. Add these secrets in your Modal dashboard:
+   - `OPENAI_API_KEY`
+   - `HF_TOKEN` (with **write permissions**)
+3. Generate a Modal token:
+   - Go to Settings → Profile → Tokens
+   - Click "New Token"
+   - Run the setup command:
+
 ```bash
 modal token set --token-id <YOUR_MODAL_TOKEN_ID> --token-secret <YOUR_MODAL_TOKEN_SECRET>
 ```
-Add both values to your `.env` file.
 
+Add both token values to your `.env` file.
 
-!!! Note 
-    If you're curious and want to learn more about Modal, check out this quick and friendly intro [here](https://github.com/{{ HF_USERNAME }}/lexo/blob/main/notebooks/10_part2_modal.ipynb).
+> **New to Modal?** Check out this [friendly intro guide](https://github.com/{{ HF_USERNAME }}/lexo/blob/main/notebooks/10_part2_modal.ipynb) to learn more.
+
+### 3. Install Dependencies
+
+```bash
+# Main dependencies required to run the core app and Modal agents
+uv sync
+
+# Docs dependencies (for MkDocs)
+uv sync --group docs
+
+# Notebook dependencies (for running notebooks)
+uv sync --group notebook
+
+# Install everything, including all groups
+uv sync --all-groups
+```
+
+Activate your virtual environment:
+```bash
+# Unix/macOS
+source .venv/bin/activate
+
+# Windows
+.\.venv\Scripts\activate
+```
 
 ---
 
-## 🚀 Run the App
+## 🚀 Running the Application
 
+### 🖥️ Local Development
+Start your development environment with these commands:
 
-### 🖥️ Local Dev Setup
+```bash
+# Start Modal services
+make run-modal
 
-1. **Create a virtual environment (venv)**
+# Launch the main application
+make run-local
 
-    There are three ways to install dependencies:
+# Run UI with hot reload (for frontend development)
+make ui
 
-    - `uv sync` — installs the **main dependencies** required to run the core app and Modal agents.
-    - `uv sync --group docs` — installs the **docs dependencies** (for MkDocs).
-    - `uv sync --group notebook` — installs the **notebook dependencies** (for running notebooks).
+# Serve documentation locally
+make docs-serve
+```
 
-    To install **everything**, including all groups: `uv sync --all-groups`
+### 🐳 Docker Development
+For a containerized environment:
 
-2. Activate venv: `source .venv/bin/activate` (Unix) or `.\.venv\Scripts\activate` (Win).
-
-3. **Run the app locally:**
-
-    - Start Modal:  
-    ```bash
-    make run-modal
-    ```
-    - Launch the app:  
-    ```bash
-    make run-local
-    ```
-
-    - Run the **UI with hot reload**:  
-    ```bash
-    make ui
-    ```
-
-    - Run the **docs**:  
-    ```bash
-    make docs-serve
-    ```
-
-### 🐳 With Docker
 ```bash
 make docker-build
 make docker-run
@@ -112,63 +117,65 @@ make docker-run
 
 ---
 
-## 🛡️ Pre-Commit
+## 🛡️ Development Workflow
 
-- Pre-commit hooks catch code style, commit message, and security issues early—saving you from failed CI checks later.
-- Hooks ensure all code passes:
+### 🪝 Pre-commit Hooks
+Set up automated code quality checks that run before each commit:
 
-    - **Code Quality:** `ruff`
-    - **Commit Standards:** `commitizen`, custom 50-character limit check
-    - **Security:** `gitleaks` to prevent committing secrets
-    - **CI Safety:** checks if the remote branch is ahead—forces a `git pull --rebase` to avoid merge conflicts
-
-!!! tip
-    This workflow enforces clean code and a smooth CI/CD process before anything hits GitHub.
-
-- To install the hooks, run:
 ```bash
 make install-hooks
 ```
 
----
+These hooks ensure your code passes:
+- **Code Quality** - `ruff` formatting and linting
+- **Commit Standards** - proper commit message format with 50-character limit
+- **Security** - `gitleaks` prevents accidental secret commits
+- **CI Safety** - checks if remote branch is ahead to avoid merge conflicts
 
-## 📝 Key Make Commands
+> **Pro tip**: This catches issues early and prevents failed CI checks later.
 
-This project uses a `Makefile` to streamline development and deployment.
+### 📝 Essential Commands
+Run `make help` to see all available commands. Here are the most commonly used:
 
-Run `make help` to see all available commands with their descriptions.
-
----
-
-## ⛓️ Dependency Management
-
-We use **uv** for fast, simple dependency management.
-
-Dependencies are added or removed using commands (see `Makefile`), which automatically update both `pyproject.toml` and the lockfile.
-
-For more details, visit: [https://docs.astral.sh/uv/](https://docs.astral.sh/uv/)
-
----
-
-## ⚙️ Configuration Constants
-
-To change constants like `ENV` (e.g., to `PROD` or `DEV`), edit `csrc/config/constants.py`—this file centralizes all constants used in the project.
-
+```bash
+make help              # Show all available commands
+make run-local         # Start local development server
+make run-modal         # Start Modal services
+make ui                # Start UI with hot reload
+make docs-serve        # Serve documentation
+make install-hooks     # Set up pre-commit hooks
+make docker-build      # Build Docker image
+make docker-run        # Run Docker container
+```
 
 ---
 
-## 💤 Modal App Scaling
+## ⚙️ Configuration
 
-Note that the **Modal app is configured to sleep after inactivity**:
+### ⚙️ Project Constants
+Modify application settings in `csrc/config/constants.py`. This file centralizes all project constants including environment settings (`ENV`, `PROD`, `DEV`).
 
-- `scaledown_window=180` — containers shut down 3 minutes after the last request. This results in a **cold start** on the next call, but **saves credits**, which suits our demo needs.
-- `min_containers=0` — no container stays "always-on".
+### 💤 Modal App Scaling
+The Modal app is configured for cost-effective demo usage:
 
-    If set to `1`, it keeps one container running (faster, but consumes more credits). Use this only during active development or testing, and **remember to stop the app manually** afterward to avoid waste.
+- **Scale-down window**: 180 seconds (3 minutes after last request)
+- **Minimum containers**: 0 (no always-on containers)
 
-The configuration used offers the best balance for this project.
+This results in cold starts but saves credits. To modify this behavior, edit `src/modal_services/app_config.py`.
 
-🔧 To modify this behavior, go to: `src/modal_services/app_config.py`
+For active development, you can set `min_containers=1` to keep one container running, but remember to stop it manually afterward to avoid unnecessary credit usage.
 
-📚 For more details, refer to [this guide](https://github.com/{{ HF_USERNAME }}/lexo/blob/main/notebooks/10_part2_modal.ipynb).
+### ⛓️ Dependency Management
+This project uses **uv** for fast dependency management. Dependencies are managed through the `Makefile` commands, which automatically update both `pyproject.toml` and the lockfile.
 
+Learn more at [uv documentation](https://docs.astral.sh/uv/).
+
+---
+
+## ❓ Need Help?
+
+- **Modal questions**: Check the [intro guide](https://github.com/{{ HF_USERNAME }}/lexo/blob/main/notebooks/10_part2_modal.ipynb)
+- **Available commands**: Run `make help`
+- **Dependencies**: See [uv documentation](https://docs.astral.sh/uv/)
+
+Ready to start building? Run the Quick Start steps above and you'll be up and running in minutes!

@@ -21,13 +21,12 @@ Before pushing to remote repo, go to the Github Repo:
 
 Add the following:
 
-- `OPENAI_API_KEY`
 - `DOCKER_TOKEN` and `DOCKER_USERNAME`
 - `HF_TOKEN`and `HF_USERNAME`
 - `GIT_USERNAME`
-- `GIT_USER_EMAIL`: *Use your GitHub-provided private email:* 
+- `GIT_USER_EMAIL`: *Use your GitHub-provided private email:*
 
-      - Go to [/settings/profile](https://github.com/settings/profile) → Emails**, enable **“Keep my email address private”**,  
+      - Go to [/settings/profile](https://github.com/settings/profile) → Emails**, enable **“Keep my email address private”**,
       - then copy the `@users.noreply.github.com` address shown there.
 
 !!!note
@@ -40,7 +39,7 @@ Add the following:
 
 Ensure GitHub Actions has the correct permissions:
 
-Go to Github Repo:  
+Go to Github Repo:
    **Settings → Actions → General → Under Workflow permissions**:
 
    - ✅ Select: `Read and write permissions`
@@ -55,7 +54,7 @@ Instead of pushing commits to GitHub to test your CI/CD pipeline, use **act** to
 We've created `act.mk` with all testing commands - this allows you to:
 
 - 🧪 **Test workflows locally** before pushing to GitHub
-- 🚀 **Debug CI/CD issues** without polluting git history  
+- 🚀 **Debug CI/CD issues** without polluting git history
 - ⚡ **Faster iteration** - no waiting for GitHub runners
 - 💰 **Save GitHub Actions minutes** during development
 

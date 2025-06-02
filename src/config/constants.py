@@ -14,7 +14,7 @@ PROJECT_NAME = pyproject["project"]["name"]
 VERSION = pyproject["project"]["version"]
 
 # ==================== ENVIRONMENT CONFIG ====================
-ENV = "PROD"  # or "PROD"
+ENV = "PROD"  # "PROD" # or "DEV"
 IS_PROD = ENV == "PROD"
 IS_DEMO_VERSION = IS_PROD  # True if PROD, False if DEV
 

@@ -35,7 +35,7 @@ notebooks/
 # Documentation
 docs/
 README.md
-changelog.md
+CHANGELOG.md
 mkdocs.yml
 mkdocs_macros.py
 
@@ -44,3 +44,6 @@ tests/
 
 # Build automation
 Makefile
+
+# CI/CD local tools
+act.mk
