@@ -12,10 +12,6 @@
 include .env
 export
 
-
-VERSION = $(shell python -c "import re; print(re.search('version = \"(.*)\"', open('pyproject.toml').read()).group(1))")
-
-
 # Usage: make -f act.mk <target>
 
 
@@ -28,17 +24,6 @@ test-lint:	## Test linting workflow
 
 test-test:	## Test unit tests workflow
 	act -j test --secret GITHUB_TOKEN=$(GITHUB_TOKEN)
-
-
-# =====================================
-# 📝 Changelog Testing		
-# =====================================
-
-test-log-prep:	## Test changelog preparation
-	act workflow_dispatch -W .github/workflows/changelog-prep.yml --input release_version=$(VERSION) --secret OPENAI_API_KEY=$(OPENAI_API_KEY) --secret GITHUB_TOKEN=$(GITHUB_TOKEN)
-
-test-log-process:	## Test changelog processing
-	act workflow_dispatch -W .github/workflows/changelog-process.yml --input process_changelog=process --secret GITHUB_TOKEN=$(GITHUB_TOKEN) --secret GIT_USERNAME="$(GIT_USERNAME)" --secret GIT_USER_EMAIL="$(GIT_USER_EMAIL)"
 
 
 # =====================================
