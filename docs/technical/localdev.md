@@ -3,25 +3,86 @@
 This guide walks you through setting up {{ PROJECT_NAME_DISPLAY }} for local development, from initial prerequisites to running the application locally.
 
 ---
-
 ## 📋 Prerequisites
 
-### 🔧 System Requirements
 - **Python 3.11**
-- **Docker** - for containerized deployments
-- **[uv package manager](https://docs.astral.sh/uv/getting-started/installation/)** - for dependency management
-- **Make** - for build automation
-  - Windows: `winget install GnuWin32.Make`
-  - macOS: `brew install make`
-  - Linux: `sudo apt install make`
+- **Docker**
+- **[uv package manager](https://docs.astral.sh/uv/getting-started/installation/)**
+- **Make**
+
+### 🐳 Install Docker
+
+Ever cloned a repo and got errors like "Python version wrong" or "library not found"? 😤
+
+Docker fixes this by:
+
+- **Consistent environment**: Everyone runs the exact same Python + libraries
+- **No conflicts**: No more "pip install failed" or dependency issues
+- **Works everywhere**: If it works on one computer, it works on ALL computers
+
+**Installation:**
+
+**--> Windows & macOS:**
+
+1. Download [Docker Desktop](https://www.docker.com/products/docker-desktop)
+2. Run the installer and start Docker Desktop
+3. Test: `docker --version && docker run hello-world`
+
+**--> Linux (Ubuntu/Debian):**
+```bash
+curl -fsSL https://get.docker.com -o get-docker.sh
+sudo sh get-docker.sh
+sudo usermod -aG docker $USER  # Optional: run Docker without sudo
+# Log out and log back in
+```
+
+### ⚡ Install uv
+
+uv is a blazing-fast Python package manager that's:
+
+- **10-100x faster** than pip for installing packages
+- **Reliable**: Creates consistent lockfiles for reproducible installs
+- **Simple**: Drop-in replacement for pip with better dependency resolution
+- **Modern**: Built in Rust for maximum performance
+
+**Installation:**
+```bash
+# macOS and Linux
+curl -LsSf https://astral.sh/uv/install.sh | sh
+
+# Windows
+powershell -c "irm https://astral.sh/uv/install.ps1 | iex"
+
+# Alternative: using pip
+pip install uv
+```
+
+Test installation: `uv --version`
+
+### 🔨 Install Make
+
+**Why Use Make?**
+
+Instead of typing long Docker commands, use simple shortcuts:
+
+- `make docker-build` instead of `docker build -t lexo .`
+- `make docker-run` instead of `docker run -it --rm --name snapr-dev \ -e TERM=xterm --env-file .env \ -v $(pwd):/app \ -w /app \ -p 7860:7860 \ --user root \ snapr:latest`
+
+**Installation:**
+
+- **Windows:** `winget install GnuWin32.Make`
+- **macOS:** `brew install make`
+- **Linux:** `sudo apt install make`
 
 ### ☁️ Required Accounts
 You'll need accounts for these services:
+
 - **[Modal](https://modal.com/)** - serverless app runtime (includes $5 free credits)
 - **[Hugging Face](https://huggingface.co/)** - model deployment
 - **[Docker Hub](https://hub.docker.com/)** - container registry
 
-### 💡 Recommended Tools
+
+### 💻 Recommended Tools
 - **VS Code** or any Python-friendly IDE
 - **Google Colab** for GPU-based notebooks (or your own GPU)
 
@@ -153,7 +214,7 @@ make docker-run        # Run Docker container
 ## ⚙️ Configuration
 
 ### ⚙️ Project Constants
-Modify application settings in `csrc/config/constants.py`. This file centralizes all project constants including environment settings (`ENV`, `PROD`, `DEV`).
+Modify application settings in `src/config/constants.py`. This file centralizes all project constants including environment settings (`ENV`, `PROD`, `DEV`).
 
 ### 💤 Modal App Scaling
 The Modal app is configured for cost-effective demo usage:
@@ -174,7 +235,7 @@ Learn more at [uv documentation](https://docs.astral.sh/uv/).
 
 ## ❓ Need Help?
 
-- **Modal questions**: Check the [intro guide](https://github.com/{{ HF_USERNAME }}/lexo/blob/main/notebooks/10_part2_modal.ipynb)
+- **Modal questions**: Check the [intro guide](https://github.com/{{ HF_USERNAME }}/lexo/blob/main/10_part2_modal.ipynb)
 - **Available commands**: Run `make help`
 - **Dependencies**: See [uv documentation](https://docs.astral.sh/uv/)
 

@@ -55,20 +55,20 @@ def build_ui() -> gr.Blocks:
                 gr.HTML(
                     f"""
                     <div id="intro-text">
-                        <p>🏷️ <strong>Snapr</strong>, 
-                        <strong>an Agentic AI System</strong>, 
-                        discovers the best online deals for you—smart, 
-                        simple, and automatic. 
-                        Let <strong>AI</strong> do the work, so you can save money 
+                        <p>🏷️ <strong>Snapr</strong>,
+                        <strong>an Agentic AI System</strong>,
+                        discovers the best online deals for you—smart,
+                        simple, and automatic.
+                        Let <strong>AI</strong> do the work, so you can save money
                         without any effort.</p>
 
 
                         <h4>🤖 How It Works:</h4>
-                            <p>1️⃣ Choose up to {MAX_CATEGORY_SELECTION} 
+                            <p>1️⃣ Choose up to {MAX_CATEGORY_SELECTION}
                             categories to search.</p>
-                            <p>2️⃣ Click "Find Smart Deals" — AI scans, estimates prices, 
+                            <p>2️⃣ Click "Find Smart Deals" — AI scans, estimates prices,
                             and filters top discounts.</p>
-                            <p>3️⃣ See the best deals in a table with prices, discounts, 
+                            <p>3️⃣ See the best deals in a table with prices, discounts,
                             and direct links.</p>
                     </div>
                     """
@@ -76,7 +76,7 @@ def build_ui() -> gr.Blocks:
                 if IS_DEMO_VERSION:
                     gr.Markdown(
                         f"""
-                        <p>⚠️ This is a demo version — limited to 
+                        <p>⚠️ This is a demo version — limited to
                         {MAX_DEMO_RUNS_PER_DAY} global runs per day for all users.</p>
                         """
                     )
@@ -84,11 +84,11 @@ def build_ui() -> gr.Blocks:
                 gr.Markdown(
                     f"""
                     <p class="custom-links">📦 Want more?
-                    You can <a href="{REPO_URL}" 
-                    target="_blank">run it locally</a> 
-                    with full <a href="{DOC_URL}/technical/localdev/" 
+                    You can <a href="{REPO_URL}"
+                    target="_blank">run it locally</a>
+                    with full <a href="{DOC_URL}/technical/localdev/"
                     target="_blank">instructions</a> and
-                    <a href="{DOC_URL}" 
+                    <a href="{DOC_URL}"
                     target="_blank">documentation</a>.</p>
                     """
                 )
@@ -119,9 +119,9 @@ def build_ui() -> gr.Blocks:
                     value="""
                     <div id="logs-label">📜 Live Agent Logs</div>
                         <div id="scrollContent">
-                            🕵️‍♀️ Click "🔍 Find Smart Deals" to wake the agents and 
+                            🕵️‍♀️ Click "🔍 Find Smart Deals" to wake the agents and
                             stream logs here!
-                        </div> 
+                        </div>
                     """
                 )
 
@@ -156,7 +156,7 @@ def build_ui() -> gr.Blocks:
                 f"""
                 <p class="version-banner">
                     🔖 <strong>
-                    <a href="{DOC_URL}/changelog" 
+                    <a href="{DOC_URL}/CHANGELOG"
                     target="_blank">Version {VERSION}</a>
                     </strong>
                 </p>

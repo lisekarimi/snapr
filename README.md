@@ -28,7 +28,7 @@ short_description: Multi-AI agent system trained to snap the best deals
 - Remote execution on Modal with live activity logs
 - DevOps: Docker, CI/CD with GitHub Actions, pre-commit hooks
 - Unit testing, security checks, and code quality enforcement
-- Auto-generated changelogs with LLM and MkDocs-based documentation
+- MkDocs-based documentation
 
 👉 For full details, see [Core Features and Development & DevOps.](https://lisekarimi.github.io/snapr).
 
