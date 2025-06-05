@@ -40,6 +40,8 @@ filterwarnings = [
 [tool.ruff]
 target-version = "py39"
 line-length = 88
+# Only process Python files
+include = ["*.py"]
 
 [tool.ruff.lint]
 select = ["E", "F", "I"]
@@ -48,5 +50,7 @@ ignore = ["F821"]
 [tool.ruff.lint.per-file-ignores]
 "src/agents/*.py" = ["ANN"]
 "tests/*.py" = ["ANN"]
-"notebooks/**/*" = ["ALL"]
-"**/*.ipynb" = ["ALL"]
+
+[tool.ruff.format]
+# Exclude non-Python files from formatting
+exclude = ["*.ipynb", "*.md", "*.yml", "*.yaml", "*.lock", "*.toml"]
