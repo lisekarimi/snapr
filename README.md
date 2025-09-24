@@ -16,8 +16,6 @@ short_description: Multi-AI agent system trained to snap the best deals
 
 <img src="https://github.com/lisekarimi/snapr/blob/main/docs/styles/assets/ui/full_app.png?raw=true" alt="Snapr interface" width="400">
 
----
-
 ## 📖 Overview
 **Snapr** is an AI-powered system that finds the best online deals using a pipeline of collaborative agents powered by LLMs, traditional ML models, embeddings, and retrieval-augmented generation (RAG).
 
@@ -32,13 +30,9 @@ short_description: Multi-AI agent system trained to snap the best deals
 
 👉 For full details, see [Core Features and Development & DevOps.](https://lisekarimi.github.io/snapr).
 
----
-
 ## ⚙️ Setup & Installation
 
 To set up locally and install the app, see the "Local Deployment" section in the [technical documentation](https://lisekarimi.github.io/snapr/technical/localdev/).
-
----
 
 ## 📚 Docs & Architecture
 
@@ -46,8 +40,6 @@ To set up locally and install the app, see the "Local Deployment" section in the
 
     - Technical and functional docs
     - Schematics of technical architecture, functional workflow, and user flow
-
----
 
 ## 🪪 License
 

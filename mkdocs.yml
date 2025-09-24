@@ -21,6 +21,7 @@ nav:
     - 🛠️ Troubleshooting: technical/troubleshooting.md
 theme:
   name: material
+  custom_dir: docs/overrides
   features:
     - navigation.instant
     - navigation.sections
@@ -81,4 +82,3 @@ extra:
       link: https://github.com/lisekarimi
     - icon: fontawesome/solid/envelope
       link: mailto:lisekarimi@gmail.com
-  
