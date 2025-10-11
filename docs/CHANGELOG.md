@@ -1,4 +1,13 @@
-## [0.1.0]
+## 🏷️ [0.2.0]
+
+### ✨ Added
+- FastAPI integration for unified app routing
+- MkDocs documentation served at `/docs` endpoint
+- Single-container deployment with FastAPI/Uvicorn
+- ChatBot widget integration for enhanced user interaction
+
+
+## 🏷️ [0.1.0]
 
 ### ✨ Added
 - Modular price prediction agents (FTPriceAgent, RAGPriceAgent, XGBoostPriceAgent, EnsemblePriceAgent)
