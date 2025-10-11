@@ -32,6 +32,7 @@ theme:
     - search.highlight
     - content.code.copy
     - content.code.annotate
+    # - toc.integrate
   font:
     text: Roboto
     code: JetBrains Mono
@@ -70,6 +71,9 @@ markdown_extensions:
         - name: mermaid
           class: mermaid
           format: !!python/name:pymdownx.superfences.fence_code_format
+  - toc:
+      permalink: false
+      toc_depth: 0
 repo_url: https://github.com/lisekarimi/snapr
 repo_name: lisekarimi/snapr
 copyright: "Made with ❤️ and Material for MkDocs · Powered by all-nighters and enthusiasm 🚀✨"

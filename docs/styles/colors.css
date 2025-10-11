@@ -75,3 +75,8 @@ table td {
   color: #6b7280 !important;
   opacity: 1 !important;
 }
+
+/* Hide secondary navigation (in-page TOC) */
+.md-nav.md-nav--secondary {
+  display: none !important;
+}
