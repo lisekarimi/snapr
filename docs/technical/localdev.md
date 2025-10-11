@@ -65,8 +65,8 @@ Test installation: `uv --version`
 
 Instead of typing long Docker commands, use simple shortcuts:
 
-- `make docker-build` instead of `docker build -t lexo .`
-- `make docker-run` instead of `docker run -it --rm --name snapr-dev \ -e TERM=xterm --env-file .env \ -v $(pwd):/app \ -w /app \ -p 7860:7860 \ --user root \ snapr:latest`
+- `make build` instead of `docker build -t snapr .`
+- `make run` instead of `docker run -it --rm --name snapr-dev \ -e TERM=xterm --env-file .env \ -v $(pwd):/app \ -w /app \ -p 7860:7860 \ --user root \ snapr:latest`
 
 **Installation:**
 
@@ -120,7 +120,7 @@ modal token set --token-id <YOUR_MODAL_TOKEN_ID> --token-secret <YOUR_MODAL_TOKE
 
 Add both token values to your `.env` file.
 
-> **New to Modal?** Check out this [friendly intro guide](https://github.com/{{ HF_USERNAME }}/lexo/blob/main/notebooks/10_part2_modal.ipynb) to learn more.
+> **New to Modal?** Check out this [friendly intro guide](https://github.com/lisekarimi/lexo/blob/main/10_part2_modal.ipynb) to learn more.
 
 ### 3. Install Dependencies
 
@@ -235,7 +235,7 @@ Learn more at [uv documentation](https://docs.astral.sh/uv/).
 
 ## ❓ Need Help?
 
-- **Modal questions**: Check the [intro guide](https://github.com/{{ HF_USERNAME }}/lexo/blob/main/10_part2_modal.ipynb)
+- **Modal questions**: Check the [intro guide](https://github.com/lisekarimi/lexo/blob/main/10_part2_modal.ipynb)
 - **Available commands**: Run `make help`
 - **Dependencies**: See [uv documentation](https://docs.astral.sh/uv/)
 
