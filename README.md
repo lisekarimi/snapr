@@ -1,12 +1,3 @@
----
-title: Snapr
-emoji: 🏷️
-colorFrom: yellow
-colorTo: blue
-sdk: docker
-short_description: Multi-AI agent system trained to snap the best deals
----
-
 # 🏷️ Snapr - Multi-AI Agent Snaps Best Deals
 
 - [🚀 Live Demo](https://snapr.lisekarimi.com)
