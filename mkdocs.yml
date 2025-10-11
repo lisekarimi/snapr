@@ -1,7 +1,7 @@
 site_name: Snapr - Documentation Hub
 nav:
   - 🏠 Home: index.md
-  - 📝 Changelog: CHANGELOG.md
+  - 🚀 Live Site: https://snapr.lisekarimi.com
   - 🧑‍💻 Functional Documentation:
     - 🔍 Overview: functional/overview.md
     - 🚶‍♀️ User Flow: functional/user-flow.md
@@ -19,6 +19,7 @@ nav:
     - 🔁 CI/CD Workflow: technical/cicd.md
     - 🚀 Deployment: technical/deployment.md
     - 🛠️ Troubleshooting: technical/troubleshooting.md
+  - 📝 Changelog: https://github.com/lisekarimi/snapr/blob/main/CHANGELOG.md
 theme:
   name: material
   custom_dir: docs/overrides
