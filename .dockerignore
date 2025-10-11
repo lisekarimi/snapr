@@ -33,11 +33,7 @@ notebooks/
 *.ipynb_checkpoints/
 
 # Documentation
-docs/
 README.md
-CHANGELOG.md
-mkdocs.yml
-mkdocs_macros.py
 
 # Testing
 tests/
@@ -47,3 +43,26 @@ Makefile
 
 # CI/CD local tools
 act.mk
+
+# Additional exclusions
+.DS_Store
+*.log
+*.swp
+*.swo
+.idea/
+dist/
+build/
+.Python
+*.so
+*.egg
+.pytest_cache
+.ruff_cache
+docker-compose.yml
+CHANGELOG.md
+Dockerfile*
+.dockerignore
+
+# MkDocs build output
+site/
+
+memory

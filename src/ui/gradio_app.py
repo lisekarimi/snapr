@@ -86,9 +86,9 @@ def build_ui() -> gr.Blocks:
                     <p class="custom-links">📦 Want more?
                     You can <a href="{REPO_URL}"
                     target="_blank">run it locally</a>
-                    with full <a href="{DOC_URL}/technical/localdev/"
+                    with full <a href="/docs/technical/localdev/"
                     target="_blank">instructions</a> and
-                    <a href="{DOC_URL}"
+                    <a href="/docs"
                     target="_blank">documentation</a>.</p>
                     """
                 )
@@ -161,6 +161,16 @@ def build_ui() -> gr.Blocks:
                     </strong>
                 </p>
                 """
+            )
+
+            # Floating chat button
+            gr.HTML(
+                """
+                <a href="https://snapr.lisekarimi.com/docs" class="floating-chat-btn"
+                    target="_blank">
+                    💬 Chat with AI Assistant
+                </a>
+            """
             )
 
         return ui

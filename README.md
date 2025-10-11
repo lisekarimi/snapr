@@ -9,8 +9,8 @@ short_description: Multi-AI agent system trained to snap the best deals
 
 # 🏷️ Snapr - Multi-AI Agent Snaps Best Deals
 
-- [🚀 Live Demo on Hugging Face](https://huggingface.co/spaces/lisekarimi/snapr)
-- [📚 Full Documentation](https://lisekarimi.github.io/snapr)
+- [🚀 Live Demo](https://snapr.lisekarimi.com)
+- [📚 Full Documentation](https://snapr.lisekarimi.com/docs)
 
 📷 **Screenshots**
 
@@ -28,11 +28,18 @@ short_description: Multi-AI agent system trained to snap the best deals
 - Unit testing, security checks, and code quality enforcement
 - MkDocs-based documentation
 
-👉 For full details, see [Core Features and Development & DevOps.](https://lisekarimi.github.io/snapr).
+👉 For full details, see [Core Features and Development & DevOps.](https://snapr.lisekarimi.com/docs).
 
 ## ⚙️ Setup & Installation
 
-To set up locally and install the app, see the "Local Deployment" section in the [technical documentation](https://lisekarimi.github.io/snapr/technical/localdev/).
+To set up locally and install the app, see the "Local Deployment" section in the [technical documentation](https://snapr.lisekarimi.com/docs/technical/localdev/).
+
+### 🏗️ Architecture
+- **Single Container Deployment**: FastAPI serves both the Gradio app and documentation
+  - Main app at `/` - Interactive Gradio interface
+  - Documentation at `/docs` - MkDocs static site
+  - No reverse proxy needed - everything runs through uvicorn/FastAPI
+- Containerized with Docker for consistent deployment across environments
 
 ## 📚 Docs & Architecture
 

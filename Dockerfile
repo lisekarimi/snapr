@@ -1,34 +1,43 @@
 FROM python:3.11-slim
 
-# Install uv
+# Install uv only (no nginx needed!)
 RUN pip install uv
 
 WORKDIR /app
 
-# Copy dependency files first (changes rarely)
+# Copy dependency files first (for layer caching)
 COPY pyproject.toml uv.lock ./
 
 # Put venv outside of /app so it won't be affected by volume mounts
 ENV UV_PROJECT_ENVIRONMENT=/opt/venv
 
-# Install dependencies (this will now create venv at /opt/venv)
-RUN uv sync --locked --no-group docs --no-group notebook
+# Install ALL dependencies including docs group (exclude only notebook)
+RUN uv sync --locked --all-groups --no-group notebook
 
-# Create a non-root user
-RUN useradd -m appuser
+# Add venv to PATH so executables are available
+ENV PATH="/opt/venv/bin:$PATH"
 
-# Copy all source code
+# Copy all application code
 COPY . .
 
-# Set ownership of writable dirs
-RUN mkdir -p /app/memory && chown -R appuser:appuser /app/memory
+# Create necessary directories and non-root user
+RUN mkdir -p /app/memory \
+    && useradd -m appuser \
+    && chown -R appuser:appuser /app /opt/venv
 
 # Switch to non-root user
 USER appuser
 
+# Expose port 8080
+EXPOSE 8080
+
 # Set environment variables
 ENV PYTHONUNBUFFERED=1
+ENV PORT=8080
 
-# Default command - use uv run to execute with the virtual environment
-CMD ["bash", "-c", "set -e && uv run modal deploy -m src.modal_services.entry && uv run main.py"]
-# CMD ["uv", "run", "main.py"]
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
+    CMD python -c "import urllib.request; urllib.request.urlopen('http://localhost:8080/')" || exit 1
+
+# Run the application directly
+CMD ["python", "main.py"]

@@ -1,6 +1,6 @@
 [project]
 name = "snapr"
-version = "0.1.0"
+version = "0.2.0"
 description = "Multi-AI agent system trained to snap the best deals"
 readme = "README.md"
 requires-python = ">=3.11, <3.12"
@@ -41,17 +41,37 @@ filterwarnings = [
 [tool.ruff]
 target-version = "py39"
 line-length = 88
+
 # Only process Python files
 include = ["*.py"]
 
-[tool.ruff.lint]
-select = ["E", "F", "I"]
-ignore = ["F821"]
+# Exclude these directories and file patterns from all ruff checks
+exclude = [
+    "notebooks/",
+    ".venv/",
+    "venv/",
+    "__pycache__/",
+    ".git/",
+    "site/",
+    "*.ipynb",
+    "*.md",
+    "*.yml",
+    "*.yaml",
+    "*.lock",
+    "*.toml",
+]
 
+[tool.ruff.lint]
+# Enable these rule categories
+select = ["E", "F", "I"]  # E: pycodestyle errors, F: pyflakes, I: isort
+
+# Ignore specific rules
+ignore = ["F821"]  # Undefined name
+
+# Per-file ignores for specific rule categories
 [tool.ruff.lint.per-file-ignores]
-"src/agents/*.py" = ["ANN"]
-"tests/*.py" = ["ANN"]
+"src/agents/*.py" = ["ANN"]  # Ignore missing type annotations in agents
+"tests/*.py" = ["ANN"]        # Ignore missing type annotations in tests
 
 [tool.ruff.format]
-# Exclude non-Python files from formatting
-exclude = ["*.ipynb", "*.md", "*.yml", "*.yaml", "*.lock", "*.toml"]
+# Ruff formatter will respect the exclude list from [tool.ruff] above

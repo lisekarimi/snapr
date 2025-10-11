@@ -69,3 +69,5 @@ logs/
 *.log
 memory/
 
+# MkDocs build output
+site/

@@ -1,6 +1,6 @@
 # 🏷️ {{ PROJECT_NAME_DISPLAY }}
 
-**Multi-agent AI system built to find the best deals — so you never overpay.**  
+**Multi-agent AI system built to find the best deals — so you never overpay.**
 *Smart. Simple. Automatic.*
 
 ---
@@ -64,7 +64,7 @@
 
 ## 🖥️ Demo
 
-> [👉 Try it on Hugging Face Spaces](https://huggingface.co/spaces/{{ HF_USERNAME }}/{{ PROJECT_NAME }})  
+> [👉 Try it](https://snapr.lisekarimi.com)
 > *(Limit: {{ MAX_DEMO_RUNS }} searches per user in demo mode)*
 
 ---
@@ -83,6 +83,5 @@
 ## 🔗 Useful Links
 
 - [Source Code](https://github.com/{{ HF_USERNAME }}/{{ PROJECT_NAME }})
-- [Live App](https://huggingface.co/spaces/{{ HF_USERNAME }}/{{ PROJECT_NAME }})
+- [Live App](https://snapr.lisekarimi.com)
 - [DockerHub](https://hub.docker.com/repository/docker/{{ DOCKER_USERNAME }}/{{ PROJECT_NAME }})
-

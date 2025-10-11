@@ -79,11 +79,11 @@ You'll need accounts for these services:
 
 - **[Modal](https://modal.com/)** - serverless app runtime (includes $5 free credits)
 - **[Hugging Face](https://huggingface.co/)** - model deployment
-- **[Docker Hub](https://hub.docker.com/)** - container registry
+- **[Docker Hub](https://hub.docker.com/)** - container registry (Optional)
 
 
 ### 💻 Recommended Tools
-- **VS Code** or any Python-friendly IDE
+- **VS Code/Cursor** or any Python-friendly IDE
 - **Google Colab** for GPU-based notebooks (or your own GPU)
 
 ---
