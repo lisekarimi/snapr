@@ -63,3 +63,15 @@ table td {
   color: #232323 !important;
   font-size: 0.7rem;
 }
+
+.pagebotai-input {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+  border: 1px solid #d1d5db !important;
+}
+
+/* Also fix placeholder text in dark mode */
+.pagebotai-input::placeholder {
+  color: #6b7280 !important;
+  opacity: 1 !important;
+}
