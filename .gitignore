@@ -71,3 +71,6 @@ memory/
 
 # MkDocs build output
 site/
+
+# Alerts GCP files
+alerts-gcp/*

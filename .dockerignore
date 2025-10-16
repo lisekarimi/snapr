@@ -65,4 +65,8 @@ Dockerfile*
 # MkDocs build output
 site/
 
+# Memory files
 memory
+
+# Alerts GCP files
+alerts-gcp/
