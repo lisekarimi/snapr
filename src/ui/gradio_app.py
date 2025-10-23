@@ -44,7 +44,7 @@ def build_ui() -> gr.Blocks:
 
     # Building the UI
     try:
-        with gr.Blocks(css=css, title=f"🏷️{PROJECT_NAME_CAP}") as ui:
+        with gr.Blocks(css=css, title=f"{PROJECT_NAME_CAP}") as ui:
             with gr.Column(elem_id="app-container"):
                 # 🔝 Top content
                 gr.Markdown(f"<h1 id='app-title'>🏷️ {PROJECT_NAME_CAP} </h1>")
@@ -150,6 +150,30 @@ def build_ui() -> gr.Blocks:
                         ),
                     )
                     return status, btn_state
+
+            # Explore More Projects section
+            gr.HTML(
+                """
+                <div class="explore-projects-section">
+                    <h3 class="explore-projects-title">🚀 Explore More Projects</h3>
+                    <p class="explore-projects-description">
+                        Impressed by these intelligent solutions? Discover a
+                        comprehensive portfolio of cutting-edge AI/ML projects
+                        showcasing advanced machine learning techniques.
+                    </p>
+                    <div class="explore-projects-links">
+                        <a href="https://lisekarimi.com" target="_blank"
+                           class="explore-link primary-link">
+                            🌐 View Portfolio
+                        </a>
+                        <a href="https://github.com/lisekarimi" target="_blank"
+                           class="explore-link secondary-link">
+                            📂 GitHub Profile
+                        </a>
+                    </div>
+                </div>
+                """
+            )
 
             # Bottom: version info
             gr.Markdown(
