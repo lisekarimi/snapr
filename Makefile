@@ -68,6 +68,8 @@ ui:	## Run the UI dev server with hot reloading
 # 🐳 Docker Commands
 # =======================
 
+# First thing first, RUN 'make run-modal' to deploy the modal services
+
 build: ## Build the Docker image
 	docker build -t $(DOCKER_IMAGE):$(TAG) .
 
@@ -83,22 +85,20 @@ run: ## Run container in background (detached mode)
 	@echo "   Main app: http://localhost:$(PORT)/"
 	@echo "   Docs:     http://localhost:$(PORT)/docs"
 
-ls: ## List documentation files inside the Docker image
+dev: ## Run the app locally
+	make build && make run
+
+ls: ## List files inside the container
 	docker run --rm $(DOCKER_IMAGE):$(TAG) ls -la /app
 
-stop: ## Stop running container
-	docker stop $(CONTAINER_NAME)
+stop: ## Stop dev container
+	docker stop $(CONTAINER_NAME) || true
 
-logs: ## View container logs
-	docker logs -f $(CONTAINER_NAME)
+clean: stop ## Stop and remove dev container and image
+	docker rm $(CONTAINER_NAME) || true
+	docker rmi $$(DOCKER_IMAGE):$(TAG) || true
 
-shell: ## Open shell in running container for debugging
-	docker exec -it $(CONTAINER_NAME) /bin/bash
-
-clean: ## Remove stopped container
-	docker rm -f $(CONTAINER_NAME) || true
-
-rebuild: clean build run ## Clean, rebuild and run
+restart: clean dev ## Restart dev container
 
 # Test endpoints
 test-app: ## Test if main app is accessible
