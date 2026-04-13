@@ -1,3 +1,13 @@
+---
+title: Snapr
+emoji: 🏷️
+colorFrom: orange
+colorTo: blue
+sdk: docker
+pinned: false
+short_description: Multi-agent AI that finds the best online deals.
+---
+
 # 🏷️ Snapr - Multi-AI Agent Snaps Best Deals
 
 - [🚀 Live Demo](https://snapr.lisekarimi.com)
