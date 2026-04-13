@@ -24,7 +24,7 @@ from src.utils.state_manager import can_run_app
 
 PROJECT_NAME_CAP = PROJECT_NAME.capitalize()
 REPO_URL = f"https://github.com/lisekarimi/{PROJECT_NAME}"
-DOC_URL = f"https://lisekarimi.github.io/{PROJECT_NAME}"
+DOC_URL = "https://snapr.lisekarimi.com/docs"
 
 
 def build_ui() -> gr.Blocks:
@@ -86,9 +86,9 @@ def build_ui() -> gr.Blocks:
                     <p class="custom-links">📦 Want more?
                     You can <a href="{REPO_URL}"
                     target="_blank">run it locally</a>
-                    with full <a href="/docs/technical/localdev/"
+                    with full <a href="{DOC_URL}/technical/localdev/"
                     target="_blank">instructions</a> and
-                    <a href="/docs"
+                    <a href="{DOC_URL}"
                     target="_blank">documentation</a>.</p>
                     """
                 )
@@ -185,16 +185,6 @@ def build_ui() -> gr.Blocks:
                     </strong>
                 </p>
                 """
-            )
-
-            # Floating chat button
-            gr.HTML(
-                """
-                <a href="https://snapr.lisekarimi.com/docs" class="floating-chat-btn"
-                    target="_blank">
-                    💬 Chat with AI Assistant
-                </a>
-            """
             )
 
         return ui

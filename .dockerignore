@@ -62,7 +62,11 @@ CHANGELOG.md
 Dockerfile*
 .dockerignore
 
-# MkDocs build output
+# MkDocs source and build output
+docs/
+landing/
+mkdocs.yml
+mkdocs_macros.py
 site/
 
 # Memory files
