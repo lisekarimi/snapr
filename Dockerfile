@@ -35,9 +35,5 @@ EXPOSE 8080
 ENV PYTHONUNBUFFERED=1
 ENV PORT=8080
 
-# Health check
-HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
-    CMD python -c "import urllib.request; urllib.request.urlopen('http://localhost:8080/')" || exit 1
-
 # Run the application directly
 CMD ["python", "main.py"]
