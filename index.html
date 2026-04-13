@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Snapr — AI Deal Scanner</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏷️</text></svg>">
+  <meta name="description" content="Multi-agent AI system built to find the best deals — so you never overpay." />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #08203d;
+      color: #e8f5f2;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+
+    .hero {
+      text-align: center;
+      max-width: 680px;
+    }
+
+    .badge {
+      display: inline-block;
+      background: rgba(255, 115, 0, 0.15);
+      color: #FF7300;
+      border: 1px solid rgba(255, 115, 0, 0.35);
+      border-radius: 100px;
+      padding: 0.35rem 1rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 1.5rem;
+    }
+
+    h1 {
+      font-size: clamp(3rem, 10vw, 5rem);
+      font-weight: 800;
+      color: #FF7300;
+      line-height: 1;
+      margin-bottom: 1.25rem;
+    }
+
+    .tagline {
+      font-size: clamp(1rem, 3vw, 1.25rem);
+      color: #c8ddd9;
+      line-height: 1.5;
+      margin-bottom: 1rem;
+    }
+
+    .desc {
+      font-size: 0.95rem;
+      color: #8aada8;
+      line-height: 1.7;
+      margin-bottom: 2.5rem;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.8rem 2rem;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+
+    .btn:hover { transform: translateY(-2px); }
+
+    .btn-primary {
+      background: #FF7300;
+      color: #fff;
+      box-shadow: 0 4px 16px rgba(255, 115, 0, 0.4);
+    }
+
+    .btn-primary:hover {
+      box-shadow: 0 6px 24px rgba(255, 115, 0, 0.55);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: #FF7300;
+      border: 2px solid #FF7300;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 115, 0, 0.08);
+    }
+
+    footer {
+      position: fixed;
+      bottom: 1.5rem;
+      font-size: 0.8rem;
+      color: #4a6b65;
+    }
+
+    footer a { color: #4a6b65; text-decoration: none; }
+    footer a:hover { color: #FF7300; }
+  </style>
+</head>
+<body>
+  <div class="hero">
+    <div class="badge">AI-Powered Deal Scanner</div>
+    <h1>Snapr</h1>
+    <p class="tagline">
+      Multi-agent AI system built to find the best deals —<br>so you never overpay.
+    </p>
+    <p class="desc">
+      Snapr scans online products in real time, predicts fair prices using fine-tuned LLMs,
+      XGBoost, and RAG pipelines, then surfaces only the deals truly worth buying.
+    </p>
+    <div class="buttons">
+      <a href="docs/" class="btn btn-primary">📖 Docs</a>
+      <a href="https://huggingface.co/spaces/lisekarimi/app-snapr"
+         class="btn btn-secondary"
+         target="_blank" rel="noopener">🚀 Try App</a>
+    </div>
+  </div>
+
+  <footer>
+    Built by <a href="https://linkedin.com/in/lisekarimi" target="_blank" rel="noopener">Lise Karimi</a>
+    &nbsp;·&nbsp;
+    <a href="https://github.com/lisekarimi/snapr" target="_blank" rel="noopener">GitHub</a>
+  </footer>
+</body>
+</html>
