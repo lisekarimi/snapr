@@ -1,3 +1,7 @@
+---
+template: home.html
+---
+
 # 🏷️ {{ PROJECT_NAME_DISPLAY }}
 
 **Multi-agent AI system built to find the best deals — so you never overpay.**
