@@ -4,6 +4,7 @@ emoji: 🏷️
 colorFrom: yellow
 colorTo: blue
 sdk: docker
+app_port: 8080
 pinned: false
 short_description: Multi-agent AI that finds the best online deals.
 ---
