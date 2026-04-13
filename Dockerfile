@@ -11,8 +11,8 @@ COPY pyproject.toml uv.lock ./
 # Put venv outside of /app so it won't be affected by volume mounts
 ENV UV_PROJECT_ENVIRONMENT=/opt/venv
 
-# Install ALL dependencies including docs group (exclude only notebook)
-RUN uv sync --locked --all-groups --no-group notebook
+# Install app dependencies (exclude docs and notebook groups)
+RUN uv sync --locked --no-group docs --no-group notebook
 
 # Add venv to PATH so executables are available
 ENV PATH="/opt/venv/bin:$PATH"
