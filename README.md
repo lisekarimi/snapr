@@ -1,7 +1,7 @@
 ---
 title: Snapr
 emoji: 🏷️
-colorFrom: orange
+colorFrom: yellow
 colorTo: blue
 sdk: docker
 pinned: false
