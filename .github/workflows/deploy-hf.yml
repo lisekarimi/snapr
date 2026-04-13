@@ -43,7 +43,7 @@ jobs:
           rm -rf "$DEPLOY_DIR"
           mkdir -p "$DEPLOY_DIR"
       
-          REPO_URL=https://${HF_USERNAME}:${HF_TOKEN}@huggingface.co/spaces/${HF_USERNAME}/${PROJECT_NAME}
+          REPO_URL=https://${HF_USERNAME}:${HF_TOKEN}@huggingface.co/spaces/${HF_USERNAME}/snapr-app
           echo "Repository URL: $REPO_URL"
 
           # Try to clone existing repository first
