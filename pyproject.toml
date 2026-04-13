@@ -1,6 +1,6 @@
 [project]
 name = "snapr"
-version = "0.2.0"
+version = "0.3.0"
 description = "Multi-AI agent system trained to snap the best deals"
 readme = "README.md"
 requires-python = ">=3.11, <3.12"
